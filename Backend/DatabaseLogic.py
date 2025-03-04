@@ -12,6 +12,9 @@ db = firestore.client()
 
 #USER AUTHENTICATION METHODS
 def createUser(userEmail, userPassword):
+    if checkUserExistence(userEmail):
+        print("[DATABASE] User already exists, sign in instead.")
+
     try:
         user = auth.create_user(email = userEmail, password = userPassword)
     except:
@@ -25,6 +28,14 @@ def createUser(userEmail, userPassword):
     userID = decodedUserToken["uid"]
 
     createUserData(userID)
+
+def checkUserExistence(userEmail):
+    try:
+        user = auth.get_user_by_email(userEmail)
+        return True
+    except firebase_admin.auth.UserNotFoundError:
+        return False
+
 
 def signInUser(userEmail, userPassword):
     signInURL = f"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={APIKey}"
