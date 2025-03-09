@@ -1,0 +1,90 @@
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  margin: 50px;
+}
+h1 {
+  color: #333;
+}
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+}
+body {
+  background-image: url("../assets/background.png");
+  background-size: 128px 128px;
+  background-repeat: repeat;
+}
+
+.middle-ground {
+  background-color: white;
+  width: 80%;
+  max-width: 1200px;
+  min-height: 100vh;
+  max-height: 1200px;
+  margin: 50px auto;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.signin-button {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  font-size: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.signin-button:hover {
+  background-color: #45a049;
+}
+
+.signin-window {
+  position: fixed;
+  top: 50px;
+  right: 20px;
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  width: 250px;
+  display: none;
+}
+
+.signin-window form {
+  display: flex;
+  flex-direction: column;
+}
+
+.signin-window input {
+  margin-bottom: 10px;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.signin-window button {
+  padding: 10px;
+  font-size: 16px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.signin-window button:hover {
+  background-color: #45a049;
+}
