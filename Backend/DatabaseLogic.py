@@ -1,54 +1,31 @@
+from flask import session
 import firebase_admin
 from firebase_admin import credentials, firestore, auth
 import requests
-import sys
+import os
+
+firebaseCredentials = credentials.Certificate(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'Credentials', 'firebaseCredentials.json'))
+APIKey = 'AIzaSyCZmBaKVQJfx-ZF16BByk7Unt8K2LzDjK4'
+
+firebase_admin.initialize_app(firebaseCredentials)
+db = firestore.client()
 
 class ExecutionAbort(Exception):
     pass
 
-# FIREBASE SETUP
-firebaseCredentials = credentials.Certificate("/Users/sinansensurucu/Desktop/the-one-ion-firebase-adminsdk-fbsvc-4767ae4f28.json")
-APIKey = "AIzaSyCZmBaKVQJfx-ZF16BByk7Unt8K2LzDjK4"
-
-firebase_admin.initialize_app(firebaseCredentials)
-db = firestore.client()
-userID = None
-
-# USER AUTHENTICATION METHODS
 def verifyUserToken(userIDToken):
     try:
         decodedUserToken = auth.verify_id_token(userIDToken)
         print("[AUTH] Successfully verified user token.")
-        global userID
-        userID = decodedUserToken["uid"]
+        return decodedUserToken["uid"]
     except Exception as e:
         raise ExecutionAbort("[AUTH] Invalid token or verification failed.") from e
 
-def createUser(userEmail, userPassword):
-    try:
-        auth.get_user_by_email(userEmail)
-        raise ExecutionAbort("[AUTH] User already exists.")
-    except firebase_admin.auth.UserNotFoundError:
-        try:
-            auth.create_user(email=userEmail, password=userPassword)
-            signInUser(userEmail, userPassword)
-            createUserData(userEmail)
-            print("[AUTH] Created new user with email:", userEmail)
-        except Exception as e:
-            raise ExecutionAbort("[AUTH] Failed to create user with provided email and password.") from e
-    except ValueError:
-        raise ExecutionAbort("[AUTH] Either email or password has invalid format/characters, try again.")
-    except ExecutionAbort as e:
-        raise ExecutionAbort(str(e))
-
-def signInUser(userEmail, userPassword):
-    if userID is not None:
-        raise ExecutionAbort("[AUTH] User is already signed in. Sign out and try again.")
-
+def signInUser(email, password):
     signInURL = f"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={APIKey}"
     payload = {
-        "email": userEmail,
-        "password": userPassword,
+        "email": email,
+        "password": password,
         "returnSecureToken": True
     }
     
@@ -57,89 +34,99 @@ def signInUser(userEmail, userPassword):
     
     if "idToken" in data:
         print("[AUTH] Login successful.")
-        verifyUserToken(data["idToken"])
+        return verifyUserToken(data["idToken"])
     else:
+        print("[AUTH] Login unsuccessful, credentials are incorrect.")
         raise ExecutionAbort("[AUTH] Login failed, credentials are incorrect.")
 
-def deleteUser():
-    if userID is None:
+def createUser(email, password):
+    try:
+        auth.get_user_by_email(email)
+        raise ExecutionAbort("[AUTH] User already exists.")
+    except firebase_admin.auth.UserNotFoundError:
+        try:
+            auth.create_user(email=email, password=password)
+            user_id = signInUser(email, password)
+            createUserData(email, user_id)
+            print("[AUTH] Created new user with email:", email)
+            return user_id
+        except Exception as e:
+            raise ExecutionAbort("[AUTH] Failed to create user with provided email and password.") from e
+    except ValueError:
+        raise ExecutionAbort("[AUTH] Either email or password has invalid format/characters, try again.")
+
+def deleteUser(user_id):
+    if not user_id:
         raise ExecutionAbort("[AUTH] User is not signed in.")
     
     try:
-        auth.delete_user(userID)
-        deleteUserData()
-        print("[AUTH] Successfully deleted the user that is currently signed in.")
-        signOutUser()
+        auth.delete_user(user_id)
+        deleteUserData(user_id)
+        print("[AUTH] Successfully deleted the user.")
     except Exception as e:
         raise ExecutionAbort("[AUTH] Failed to delete user.") from e
 
-def signOutUser():
-    global userID
-    userID = None
-    print("[AUTH] User signed out.")
-
-#USER DATA METHODS
-def createUserData(userEmail):
-    if userID is None:
+def createUserData(email, user_id):
+    if not user_id:
         raise ExecutionAbort("[DATA] Cannot create data for user that is not signed in.")
-
+    
     userData = {
-        "userEmail" : userEmail,
-        "streak" : 1,
-        "totalScore" : 0,
-        "bestScore" : 0,
-        "globalRanking" : len(db.collection("users").get()) + 1
+        "userEmail": email,
+        "streak": 1,
+        "totalScore": 0,
+        "bestScore": 0,
+        "globalRanking": len(db.collection("users").get()) + 1
     }
+    db.collection("users").document(user_id).set(userData)
+    print("[DATA] Successfully created user data fields.")
 
-    db.collection("users").document(userID).set(userData)
-    print("[AUTH] Successfully created user data fields.")
-
-
-def deleteUserData():
-    if userID is None:
+def deleteUserData(user_id):
+    if not user_id:
         raise ExecutionAbort("[DATA] Cannot delete data for user that is not signed in.")
     
-    db.collection("users").document(userID).delete()
+    db.collection("users").document(user_id).delete()
     print("[DATA] Successfully deleted all user data.")
+    
 
 def registerScore(roundScore):
-    if userID is None:
+    user_id = session.get("user_id")
+
+    if user_id is None:
         raise ExecutionAbort("[DATA] Cannot update score data for user that is not signed in.")
     
-    userSnapshot = db.collection("users").document(userID).get().to_dict()
-    currentTotalScore = getUserTotalScore()
-    currentBestScore = getUserBestScore()
+    userSnapshot = db.collection("users").document(user_id).get().to_dict()
+    currentTotalScore = getUserTotalScore(user_id)
+    currentBestScore = getUserBestScore(user_id)
     
-    db.collection("users").document(userID).update({"totalScore": (currentTotalScore + roundScore)})
+    db.collection("users").document(user_id).update({"totalScore": (currentTotalScore + roundScore)})
     print("[DATA] Updated user's total score.")
-
+    
     if roundScore > currentBestScore:
-        db.collection("users").document(userID).update({"bestScore": roundScore})
+        db.collection("users").document(user_id).update({"bestScore": roundScore})
         print("[DATA] Updated user's best score.")
 
 def getUserTotalScore():
+    user_id = session.get("user_id")
+
+    if user_id is None:
+        raise ExecutionAbort("[DATA] Cannot get score data for user that is not signed in.")
+
     try:
-        userSnapshot = db.collection("users").document(userID).get().to_dict()
+        userSnapshot = db.collection("users").document(user_id).get().to_dict()
         print("[DATA] Successfully fetched user's total score.")
         return userSnapshot.get("totalScore", 0)
     except Exception as e:
         raise ExecutionAbort("[DATA] Error while fetching user's total score.")
 
 def getUserBestScore():
+    user_id = session.get("user_id")
+
+    if user_id is None:
+        raise ExecutionAbort("[DATA] Cannot get best score data for user that is not signed in.")
+
     try:
-        userSnapshot = db.collection("users").document(userID).get().to_dict()
+        userSnapshot = db.collection("users").document(user_id).get().to_dict()
         print("[DATA] Successfully fetched user's best score.")
         return userSnapshot.get("bestScore", 0)
     except Exception as e:
         raise ExecutionAbort("[DATA] Error while fetching user's best score.")
-
-
-
-
-
-
-while True:
-    try:
-        exec(input("--> "))
-    except Exception as e:
-        print(str(e))
