@@ -5,7 +5,7 @@ import requests
 import os
 
 firebaseCredentials = credentials.Certificate(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'Credentials', 'firebaseCredentials.json'))
-APIKey = 'AIzaSyCZmBaKVQJfx-ZF16BByk7Unt8K2LzDjK4'
+APIKey = ''
 
 firebase_admin.initialize_app(firebaseCredentials)
 db = firestore.client()
