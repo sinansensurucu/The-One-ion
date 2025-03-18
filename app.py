@@ -8,7 +8,7 @@ app = Flask(
     )
 app.secret_key = 'some-key-change-later'
 
-@app.route('/signin', methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
 def signin():
     if session.get("user_id"):
         return redirect(url_for('index'))
@@ -35,7 +35,7 @@ def signin():
     
     return render_template("signin.html")
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/index', methods=['GET', 'POST'])
 def index():
     if not session.get("user_id"):
         flash("Please sign in first.", "error")
@@ -61,3 +61,4 @@ def index():
 
 if __name__ == '__main__':
     app.run(debug=True)
+    session["user_id"] = None
