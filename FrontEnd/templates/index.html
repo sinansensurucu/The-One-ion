@@ -9,14 +9,30 @@
   <body>
     <div class="middle-ground">
       <h1>Welcome to the One-Ion</h1>
-      <p>A Game of Fake News on the Internet</p>
-      <p>place holder text for rules or sth like that</p>
-      <p>can be repruposed for the space to view articles</p>
-      <p class="debug"> DEBUG </p>
+
+        <div class="grid-container">
+          {% for article in articles %}
+              <div class="vertical-box">
+                  <div class = "article-title">
+                      {{ article[0] }}
+                  </div>
+
+                  <div class = "article-content">
+                      {{ article[1] }}
+                  </div>
+                  <div class = "button_container">
+                      <button class="button" button-type = "Real">Real</button><button class="button" button-type = "Fake">Fake</button><button class="button" button-type = "Onion">Onion</button>
+                  </div>
+
+              </div>
+          {% endfor %}
+    </div>
+
+      <!-- <p class="debug"> DEBUG </p> -->
     </div>
 
     <button class="signin-button" onclick="toggleSigninWindow()">
-      Sign In
+      {{ Username }}
     </button>
 
     <div class="signin-window" id="signinWindow">
@@ -28,6 +44,18 @@
         </div>
       </form>
     </div>
+
+    <div class="overlay" id="overlay"></div>
+    <div class="popup" id="popup">
+        <h2>You win !! </h2>
+        <p>This is a simple popup!</p>
+        <button id="close-popup-btn">Close</button>
+
+
+    </div>
+
+
+
     <script src="../static/script.js"></script>
   </body>
 </html>
