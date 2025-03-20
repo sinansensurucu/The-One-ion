@@ -32,7 +32,7 @@
     </div>
 
     <button class="signin-button" onclick="toggleSigninWindow()">
-      {{ Username[0].upper() }}
+      {{ Username }}
     </button>
 
     <div class="signin-window" id="signinWindow">
@@ -60,7 +60,7 @@
     <div class="popup" id="deleteconfirm">
       <p>Are you sure you want to delete your account?</p>
       <a href="{{ url_for('signin') }}">
-          <button name="action" value="delete account">Yes</button>
+          <button id = "deleteconfirmbtn" name="action" value="delete account">Yes</button>
       </a>
       <button id="close-popup-btn">No</button>
     </div>

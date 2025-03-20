@@ -38,13 +38,18 @@ Apple's product lineup includes portable and home hardwaree""", "real"] ]   ##ne
 button_pressed = False
 id_of_button_pressed = -1
 
-logged_in = True
 Username = ""
+logged_in = False
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    global logged_in
+    global Username
     if not session.get("user_id"):
+        print("X")
         logged_in = False
+    else:
+        logged_in = True
     
     if request.method == 'POST':
         action = request.form.get("action")
@@ -56,6 +61,8 @@ def index():
                 deleteUser(session["user_id"])
                 session["user_id"] = None
                 flash("User account deleted.", "success")
+            logged_in = False
+            Username = ""
         except ExecutionAbort as e:
             flash(str(e), "error")
         return redirect(url_for('signin'))
@@ -64,6 +71,8 @@ def index():
 
 @app.route('/signin', methods=['GET', 'POST'])
 def signin():
+    global Username
+    global logged_in
     if session.get("user_id"):
         return redirect(url_for('index'))
     
@@ -81,13 +90,16 @@ def signin():
                 user_id = createUser(email, password)
                 session['user_id'] = user_id
                 flash("Registration and login successful!", "success")
+            Username = email
+            logged_in = True
         except ExecutionAbort as e:
             flash(str(e), "error")
+            #invalid_log = True
             return redirect(url_for('signin'))
-    
+
         return redirect(url_for('index'))
 
-    return render_template("signin.html", articles=Articles, Username=Username)
+    return render_template("signin.html", articles=Articles, Username=Username, logged_in = True)
 
 
 @app.route('/button_pressed', methods=['POST'])

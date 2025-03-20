@@ -104,13 +104,15 @@ window.onload = function() {
       document.getElementById("overlay").style.display = "block";
   }
 };
-var button = document.getElementsByClassName('signin-btn')[0];
-button.addEventListener('click', function() {
+document.getElementsByClassName('signin-btn')[0].addEventListener('click', function() {
     window.loggedIn = false;
     location.reload
 });
-var button = document.getElementsByClassName('signup-btn')[0];
-button.addEventListener('click', function() {
+document.getElementsByClassName('signup-btn')[0].addEventListener('click', function() {
+    document.getElementById("deleteconfirm").style.display = "block";
+    document.getElementById("overlay").style.display = "block";
+});
+document.getElementById('deleteconfirmbtn').addEventListener('click', function() {
     window.loggedIn = false;
     location.reload
 });
