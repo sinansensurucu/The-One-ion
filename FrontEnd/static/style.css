@@ -10,11 +10,6 @@ button {
   padding: 10px 20px;
   font-size: 16px;
 }
-body {
-  background-image: url("../assets/background.png");
-  background-size: 128px 128px;
-  background-repeat: repeat;
-}
 
 /* .middle-ground {
   background-color: white;
@@ -99,17 +94,14 @@ html, h1{
  
 }
 
-
 body {  /*how to do background thing?? havent figured out yet*/
-  height: 100%;
-  background-image: url("../assetsv/background.png");
+  background-image: url("../assets/background.png");
   background-size: 128px 128px;
   background-repeat: repeat;
   overflow: none;
-
 }
 
-.grid-container {
+.grid-container{
   display: grid;
   padding-inline: 2%;
 
@@ -204,12 +196,12 @@ body {  /*how to do background thing?? havent figured out yet*/
 }
 
 .button {
-  margin-top: auto;  /* Push button to the bottom */
+  margin-top: auto;
   margin-bottom: 1%;
   margin-left: 2%;
   margin-right: 2%;
 
-  padding: 10px 20px; /* Button size */
+  padding: 10px 20px;
   background-color: rgb(24, 70, 37);
   color: white;
   border: 3px, solid black;
@@ -226,11 +218,11 @@ body {  /*how to do background thing?? havent figured out yet*/
   grid-template-columns: repeat(3, 1fr);
   justify-content: center;
   align-items: center;
-  margin: auto; /* Horizontally centers the container */
+  margin: auto;
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%); /* Moves it back by half its width & height */
+  transform: translate(-50%, -50%);
 }
 
 
@@ -249,4 +241,45 @@ body {  /*how to do background thing?? havent figured out yet*/
   border: 3px solid black;
   border-radius: 5px;
   cursor: pointer;
+}
+
+
+.signin-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.input-container {
+  display: grid;
+  gap: 15px;
+  grid-template-columns: 1fr;
+}
+
+.input-container input {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.button-container button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.button-container button[type="submit"]:hover {
+  background-color: #007bff;
+  color: white;
 }

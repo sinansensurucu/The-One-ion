@@ -36,13 +36,11 @@ document.getElementById('close-popup-btn').addEventListener('click', function() 
   document.getElementById('overlay').style.display = 'none';
 });
 
-
-
-// Close the popup if the user clicks on the overlay
-document.getElementById('overlay').addEventListener('click', function() {
-  document.getElementById('popup').style.display = 'none';
-  document.getElementById('overlay').style.display = 'none';
-});
+// // Close the popup if the user clicks on the overlay
+// document.getElementById('overlay').addEventListener('click', function() {
+//   document.getElementById('popup').style.display = 'none';
+//   document.getElementById('overlay').style.display = 'none';
+// });
 
 
   // Handle the "account" button click
@@ -99,4 +97,20 @@ document.querySelectorAll('.button').forEach(button => {
       })
       .catch(error => console.error('Error:', error));
   });
+});
+window.onload = function() {
+  if (!window.loggedIn) {
+      document.getElementById("forcesignin").style.display = "block";
+      document.getElementById("overlay").style.display = "block";
+  }
+};
+var button = document.getElementsByClassName('signin-btn')[0];
+button.addEventListener('click', function() {
+    window.loggedIn = false;
+    location.reload
+});
+var button = document.getElementsByClassName('signup-btn')[0];
+button.addEventListener('click', function() {
+    window.loggedIn = false;
+    location.reload
 });
