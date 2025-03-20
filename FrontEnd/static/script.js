@@ -104,15 +104,9 @@ window.onload = function() {
       document.getElementById("overlay").style.display = "block";
   }
 };
-document.getElementsByClassName('signin-btn')[0].addEventListener('click', function() {
-    window.loggedIn = false;
-    location.reload
-});
-document.getElementsByClassName('signup-btn')[0].addEventListener('click', function() {
-    document.getElementById("deleteconfirm").style.display = "block";
-    document.getElementById("overlay").style.display = "block";
-});
-document.getElementById('deleteconfirmbtn').addEventListener('click', function() {
-    window.loggedIn = false;
-    location.reload
-});
+//attempt at making a confirmation for deleting account, did not work
+// document.getElementsByClassName('signup-btn')[0].addEventListener('click', function() {
+//     document.getElementById("deleteconfirm").style.display = "block";
+//     document.getElementById("overlay").style.display = "block";
+// });
+

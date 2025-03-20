@@ -40,7 +40,7 @@
         <h2>Hello {{ Username }}</h2>
         <div class="button-container">
           <button type="submit" class="signin-btn" name="action" value="logout">Log Out</button>
-          <button type="submit" class="signup-btn" name="action" value="delete account pre">Delete Account</button>
+          <button type="submit" class="signup-btn" name="action" value="delete account">Delete Account</button>
         </div>
       </form>
     </div>
@@ -59,9 +59,7 @@
     </div>
     <div class="popup" id="deleteconfirm">
       <p>Are you sure you want to delete your account?</p>
-      <a href="{{ url_for('signin') }}">
-          <button id = "deleteconfirmbtn" name="action" value="delete account">Yes</button>
-      </a>
+      <button id = "deleteconfirmbtn" name="action" value="delete account post">Yes</button>
       <button id="close-popup-btn">No</button>
     </div>
 

@@ -46,7 +46,6 @@ def index():
     global logged_in
     global Username
     if not session.get("user_id"):
-        print("X")
         logged_in = False
     else:
         logged_in = True
@@ -96,7 +95,7 @@ def signin():
             flash(str(e), "error")
             #invalid_log = True
             return redirect(url_for('signin'))
-
+        print("X")
         return redirect(url_for('index'))
 
     return render_template("signin.html", articles=Articles, Username=Username, logged_in = True)
