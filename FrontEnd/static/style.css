@@ -67,7 +67,9 @@ button {
 .signin-window h2 {
   font-size: 2rem; /* Large and bold */
   font-weight: 900;
-  color: #4e4e4e; /* Vibrant orange */
+  color: #4e4e4e; 
+  word-wrap: break-word; 
+  overflow-wrap: break-word; 
 }
 
 .signin-window form {

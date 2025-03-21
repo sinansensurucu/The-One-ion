@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
-from Backend.DatabaseLogic import ExecutionAbort, signInUser, createUser, deleteUser, getArticleToSolve, getUserEmail
+from Backend.DatabaseLogic import ExecutionAbort, signInUser, createUser, deleteUser, getArticleToSolve, getUserEmail, getUserTotalScore, getUserBestScore, getUserStreak, getLeaderboard
 
 app = Flask(
     __name__,
@@ -24,11 +24,9 @@ def index():
     else:
         logged_in = True
         #updateInfo()
-        # Article = getArticleToSolve(session["user_id"]) 
-        Article = ("title", "bla bla bla", "www.youtube.com", "Fake")   ##temp values
-        # user = getUserEmail(session["user_id"])
-        user = ("bloop", 1200, 13200, 7, [(1,"b@gmail.com", 23000), (2, "c@gmail.com", 4500), (3, "a@gmail.com", 4500)])
-        #user = (getUserEmail(session["user_id"]), getUserTotalScore(session["user_id"]), getUserBestScore(session["user_id"]), getUserStreak(session["user_id"]), getLeaderboard)
+        #Article = ("title", "bla bla bla", "www.youtube.com", "Fake")   ##temp values
+        #user = getUserEmail(session["user_id"])
+        #user = ("bloop", 1200, 13200, 7, [(1,"b@gmail.com", 23000), (2, "c@gmail.com", 4500), (3, "a@gmail.com", 4500)])
 
     
     if request.method == 'POST':
@@ -53,6 +51,9 @@ def index():
 def signin():
     global Article, user, logged_in
     if session.get("user_id"):
+        Article = getArticleToSolve(session["user_id"]) 
+        user = (getUserEmail(session["user_id"]), getUserTotalScore(session["user_id"]), getUserBestScore(session["user_id"]), getUserStreak(session["user_id"]), getLeaderboard())
+
         return redirect(url_for('index'))
     
     if request.method == 'POST':
@@ -86,10 +87,9 @@ def signin():
 def button_pressed():
     
     button_pressed = True 
-    print(request.form['button_id'])
-    print("buttppn pressed")
+
     id_of_button_pressed = request.form['button_id']
-    if Article[3] == id_of_button_pressed:
+    if Article[2] == id_of_button_pressed:
         return jsonify({"status": "success", "id": id_of_button_pressed, "win" : "True"})
         
         ##game win
