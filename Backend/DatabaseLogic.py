@@ -213,15 +213,18 @@ def getArticleToSolve(user_id):
         raise ExecutionAbort("[DATA] Cannot get article for user that is not signed in.")
      
     try:
-        solvedArticleIDs = __getArticlesSolved__(user_id)
+        solvedArticleIDs = sorted(__getArticlesSolved__(user_id))
 
-        allArticleIDs = __getAllArticles__()
+        allArticleIDs = sorted(__getAllArticles__())
+
+        if not solvedArticleIDs or solvedArticleIDs == allArticleIDs:
+            return random.choice(allArticleIDs)
 
         availableArticles = [article for article in allArticleIDs if article not in solvedArticleIDs]
         
-        articleToSolve = random.choice(allArticleIDs) if not availableArticles else random.choice(availableArticles) 
+        articleToSolve = random.choice(availableArticles) 
      
-        __addArticleAsSolved__(articleToSolve)
+        __addArticleAsSolved__(user_id, articleToSolve)
 
         return __getArticleByID__(articleToSolve)
 
@@ -294,5 +297,3 @@ def __addArticleAsSolved__(user_id, article_id):
 
     except:
         raise ExecutionAbort("[DATA] Error while fetching user's article data.")
-    
-#add getLeaderBoard and getCorrectAnswerByArticleID
