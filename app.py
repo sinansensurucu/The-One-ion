@@ -18,12 +18,17 @@ id_of_button_pressed = None
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    global logged_in
+    global logged_in, Article, user
     if not session.get("user_id"):
         logged_in = False
     else:
         logged_in = True
         #updateInfo()
+        # Article = getArticleToSolve(session["user_id"]) 
+        Article = ("title", "bla bla bla", "www.youtube.com", "Fake")   ##temp values
+        # user = getUserEmail(session["user_id"])
+        user = "bloop"
+
     
     if request.method == 'POST':
         action = request.form.get("action")
@@ -80,9 +85,12 @@ def signin():
 def button_pressed():
     
     button_pressed = True 
+    print(request.form['button_id'])
+    print("buttppn pressed")
     id_of_button_pressed = request.form['button_id']
     if Article[3] == id_of_button_pressed:
         return jsonify({"status": "success", "id": id_of_button_pressed, "win" : "True"})
+        
         ##game win
     else:
         return jsonify({"status": "success", "id": id_of_button_pressed, "win" : "False"})

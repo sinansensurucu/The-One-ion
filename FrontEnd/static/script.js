@@ -71,7 +71,7 @@ document.getElementById('close-popup-btn').addEventListener('click', function() 
 document.querySelectorAll('.button').forEach(button => {
   button.addEventListener('click', function() {
       // Get the article title (article[0]) from the data-attribute
-      const article_id = button.getAttribute('button-type');
+      const button_id = button.getAttribute('button-type');
       
       // Send the value to the Flask server using a POST request
       fetch('/button_pressed', {
