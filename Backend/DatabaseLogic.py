@@ -192,10 +192,22 @@ def getGlobalRanking(user_id):
     except:
         raise ExecutionAbort("[DATA] Error while fetching user's ranking.")
 
+def getUserEmail(user_id):
+    if user_id is None:
+        raise ExecutionAbort("[DATA] Cannot get email data for user that is not signed in.")
+    
+    try:
+        userSnapshot = db.collection("users").document(user_id).get().to_dict()
+        print("[DATA] Successfully fetched user's email.")
+        return userSnapshot.get("userEmail", user_id)
+    except:
+        raise ExecutionAbort("[DATA] Error while fetching user's email.")
+
 #Article Functionality
 
 #returns single article that user hasn't solved (if solved all, returns a random article) 
-#as string as tuple of (title, content, link), it also marks the returned article as read
+#as string as tuple of (title, content, link, answer), it also marks the returned article as read
+#save answer return value to check against user answer.
 def getArticleToSolve(user_id):
     if user_id is None:
         raise ExecutionAbort("[DATA] Cannot get article for user that is not signed in.")
@@ -216,6 +228,31 @@ def getArticleToSolve(user_id):
     except:
         raise ExecutionAbort("[DATA] Error while fetching user's available article data.")
 
+#returns a list of tuples containing (rank, userEmail, and userScore) for the ranks
+def getLeaderboard():
+    try:
+        userSnapshot = db.collection("users").get()
+
+        user_scores = []
+
+        for doc in userSnapshot:
+            data = doc.to_dict()
+            if data is None:
+                continue
+            score = data.get("totalScore", 0)
+            user_scores.append((doc.id, score))
+
+        user_scores = sorted(user_scores, key = lambda x: x[1], reverse = True)
+
+        results = [(rank, getUserEmail(uid), score) for rank, (uid, score) in enumerate(user_scores, start = 1)]
+
+        print("[DATA] Successfully fetched user's ranking.")
+
+        return results
+            
+    except:
+        print("[DATA] Error while fetching leaderboard.")
+
 #METHODS BELOW ARE NOT FOR FRONTEND CALLS
 def __getAllArticles__():
     articlesSnapshot = db.collection("articles").get()
@@ -231,8 +268,9 @@ def __getArticleByID__(article_id):
     articleTitle = articleSnapshot.get("title")
     articleContent = articleSnapshot.get("content")
     articleLink = articleSnapshot.get("link")
+    articleAnswer = articleSnapshot.get("answer")
 
-    return articleTitle, articleContent, articleLink
+    return articleTitle, articleContent, articleLink, articleAnswer
 
 def __getArticlesSolved__(user_id):
     if user_id is None:
@@ -256,3 +294,5 @@ def __addArticleAsSolved__(user_id, article_id):
 
     except:
         raise ExecutionAbort("[DATA] Error while fetching user's article data.")
+    
+#add getLeaderBoard and getCorrectAnswerByArticleID
