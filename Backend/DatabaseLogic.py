@@ -217,7 +217,7 @@ def getArticleToSolve(user_id):
 
         allArticleIDs = sorted(__getAllArticles__())
 
-        if not solvedArticleIDs or solvedArticleIDs == allArticleIDs:
+        if solvedArticleIDs == allArticleIDs:
             return random.choice(allArticleIDs)
 
         availableArticles = [article for article in allArticleIDs if article not in solvedArticleIDs]
