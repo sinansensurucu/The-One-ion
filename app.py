@@ -8,11 +8,11 @@ app = Flask(
     )
 app.secret_key = 'some-key-change-later'
 
-user = getUserEmail(session["user_id"] )
-        
 
-Articles = getArticleToSolve(user) 
-
+global Article 
+global user 
+Article = None
+user = None
 button_pressed = False
 id_of_button_pressed = None
 
@@ -20,13 +20,15 @@ id_of_button_pressed = None
 
 @app.route('/', methods=['GET', 'POST'])
 def signin():
+    global Article, user
     if session.get("user_id"):
-        return redirect(url_for('index'), article=Articles, Username=user)
+        return redirect(url_for('index'), article= getArticleToSolve(session["user_id"]) , Username=getUserEmail(session["user_id"]))
     
     if request.method == 'POST':
         action = request.form.get("action")
         email = request.form.get("username")
         password = request.form.get("password")
+
         
         try:
             if action == "login":
@@ -37,13 +39,16 @@ def signin():
                 user_id = createUser(email, password)
                 session['user_id'] = user_id
                 flash("Registration and login successful!", "success")
+            user = getUserEmail(session["user_id"])
+            Article = getArticleToSolve(user) 
+            
         except ExecutionAbort as e:
             flash(str(e), "error")
             return redirect(url_for('signin'))
         
         return redirect(url_for('index'))
     
-    return render_template("signin.html", article=Articles, Username=user)
+    return render_template("signin.html", article=Article, Username=user)
 
 
 @app.route('/button_pressed', methods=['POST'])
@@ -51,7 +56,7 @@ def button_pressed():
     
     button_pressed = True 
     id_of_button_pressed = request.form['button_id']
-    if Articles[4] == id_of_button_pressed:
+    if Article[3] == id_of_button_pressed:
         return jsonify({"status": "success", "id": id_of_button_pressed, "win" : "True"})
         ##game win
     else:
@@ -82,11 +87,12 @@ def index():
         except ExecutionAbort as e:
             flash(str(e), "error")
 
-        return redirect(url_for('index'), article=Articles, Username=user)
+        return redirect(url_for('index'), article=Article, Username=user)
 
-    return render_template("index.html", article=Articles, Username=user)
+    return render_template("index.html", article=Article, Username=user)
 
 
 if __name__ == '__main__':
     app.run(debug=True)
     session["user_id"] = None
+    

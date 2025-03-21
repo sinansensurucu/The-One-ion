@@ -11,7 +11,6 @@
       <h1>Welcome to the One-Ion</h1>
 
         <div class="grid-container">
-          {% for article in articles %}
               <div class="vertical-box">
                   <div class = "article-title">
                       {{ article[0] }}
@@ -25,7 +24,6 @@
                   </div>
 
               </div>
-          {% endfor %}
         </div>
 
       <!-- <p class="debug"> DEBUG </p> -->
@@ -47,7 +45,7 @@
 
     <div class="overlay" id="overlay"></div>
     <div class="popup" id="popup">
-        <h2>You win !! </h2>
+        <h2>You Lose !!  </h2>
         <p>This is a simple popup!</p>
         <button id="close-popup-btn">Close</button>
     </div>
