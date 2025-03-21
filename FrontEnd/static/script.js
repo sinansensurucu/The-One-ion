@@ -85,16 +85,22 @@ document.querySelectorAll('.button').forEach(button => {
       })
       .then(response => response.json())
       .then(data => {
-          if (data.status === 'success') {
-              // if (data.win === "True"){
-              //     document.getElementById('popup').innerText 
-              // }
-              document.getElementById('popup').style.display = 'block';
-              document.getElementById('overlay').style.display = 'block';
-          } else {
+        if (data.status === 'success') {
+            let popup = document.getElementById('popup');
+            let popupText = popup.querySelector('h2'); // Select the <h2> inside #popup
 
-          }
-      })
+            // Change text based on win condition
+            if (data.win === "True") {
+                popupText.innerText = "You Win !!";
+            } else {
+                popupText.innerText = "You Lose !!";
+            }
+
+            // Show the popup
+            popup.style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+        }
+    })
       .catch(error => console.error('Error:', error));
   });
 });

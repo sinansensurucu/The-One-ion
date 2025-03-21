@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
-from Backend.DatabaseLogic import ExecutionAbort, signInUser, createUser, deleteUser, getArticleToSolve
+from Backend.DatabaseLogic import ExecutionAbort, signInUser, createUser, deleteUser, getArticleToSolve, getUserEmail
 
 app = Flask(
     __name__,
@@ -8,20 +8,20 @@ app = Flask(
     )
 app.secret_key = 'some-key-change-later'
 
-user = "123@gmail.com"
+user = getUserEmail(session["user_id"] )
         
 
-Articles = getArticleToSolve(user)   ##needs to connect to backend here 
+Articles = getArticleToSolve(user) 
 
 button_pressed = False
-id_of_button_pressed = -1
+id_of_button_pressed = None
 
 
 
 @app.route('/', methods=['GET', 'POST'])
 def signin():
     if session.get("user_id"):
-        return redirect(url_for('index'), articles=Articles, Username=user)
+        return redirect(url_for('index'), article=Articles, Username=user)
     
     if request.method == 'POST':
         action = request.form.get("action")
@@ -43,7 +43,7 @@ def signin():
         
         return redirect(url_for('index'))
     
-    return render_template("signin.html", articles=Articles, Username=Username)
+    return render_template("signin.html", article=Articles, Username=user)
 
 
 @app.route('/button_pressed', methods=['POST'])
@@ -51,10 +51,15 @@ def button_pressed():
     
     button_pressed = True 
     id_of_button_pressed = request.form['button_id']
-    print(id_of_button_pressed)
-    ## comparison to actual thing happens here. 
+    if Articles[4] == id_of_button_pressed:
+        return jsonify({"status": "success", "id": id_of_button_pressed, "win" : "True"})
+        ##game win
+    else:
+        return jsonify({"status": "success", "id": id_of_button_pressed, "win" : "False"})
+        ##game lose
 
-    return jsonify({"status": "success", "id": id_of_button_pressed, "win" : "True"})
+
+
 
 
 @app.route('/index', methods=['GET', 'POST'])
@@ -77,9 +82,9 @@ def index():
         except ExecutionAbort as e:
             flash(str(e), "error")
 
-        return redirect(url_for('index'), articles=Articles, Username=user)
+        return redirect(url_for('index'), article=Articles, Username=user)
 
-    return render_template("index.html", articles=Articles, Username=user)
+    return render_template("index.html", article=Articles, Username=user)
 
 
 if __name__ == '__main__':
