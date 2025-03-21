@@ -27,7 +27,8 @@ def index():
         # Article = getArticleToSolve(session["user_id"]) 
         Article = ("title", "bla bla bla", "www.youtube.com", "Fake")   ##temp values
         # user = getUserEmail(session["user_id"])
-        user = "bloop"
+        user = ("bloop", 1200, 13200, 7, [(1,"b@gmail.com", 23000), (2, "c@gmail.com", 4500), (3, "a@gmail.com", 4500)])
+        #user = (getUserEmail(session["user_id"]), getUserTotalScore(session["user_id"]), getUserBestScore(session["user_id"]), getUserStreak(session["user_id"]), getLeaderboard)
 
     
     if request.method == 'POST':
@@ -46,7 +47,7 @@ def index():
             flash(str(e), "error")
         return redirect(url_for('signin'))
 
-    return render_template("index.html", article=Article, Username=user, logged_in=logged_in)
+    return render_template("index.html", article=Article, User=user, logged_in=logged_in)
 
 @app.route('/signin', methods=['GET', 'POST'])
 def signin():
@@ -78,7 +79,7 @@ def signin():
             return redirect(url_for('signin'))
         return redirect(url_for('index'))
 
-    return render_template("signin.html", article=Article, Username=user, logged_in = True)
+    return render_template("signin.html", article=Article, User=user, logged_in = True)
 
 
 @app.route('/button_pressed', methods=['POST'])
