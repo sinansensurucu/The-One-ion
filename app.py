@@ -16,13 +16,38 @@ user = None
 button_pressed = False
 id_of_button_pressed = None
 
-
-
 @app.route('/', methods=['GET', 'POST'])
+def index():
+    global logged_in
+    if not session.get("user_id"):
+        logged_in = False
+    else:
+        logged_in = True
+        #updateInfo()
+    
+    if request.method == 'POST':
+        action = request.form.get("action")
+        try:
+            if action == "logout":
+                session["user_id"] = None
+                flash("User logged out.", "success")
+            elif action == "delete account":
+                deleteUser(session["user_id"])
+                session["user_id"] = None
+                flash("User account deleted.", "success")
+            logged_in = False
+            
+        except ExecutionAbort as e:
+            flash(str(e), "error")
+        return redirect(url_for('signin'))
+
+    return render_template("index.html", article=Article, Username=user, logged_in=logged_in)
+
+@app.route('/signin', methods=['GET', 'POST'])
 def signin():
-    global Article, user
+    global Article, user, logged_in
     if session.get("user_id"):
-        return redirect(url_for('index'), article= getArticleToSolve(session["user_id"]) , Username=getUserEmail(session["user_id"]))
+        return redirect(url_for('index'))
     
     if request.method == 'POST':
         action = request.form.get("action")
@@ -39,16 +64,16 @@ def signin():
                 user_id = createUser(email, password)
                 session['user_id'] = user_id
                 flash("Registration and login successful!", "success")
+            logged_in = True
             user = getUserEmail(session["user_id"])
             Article = getArticleToSolve(user) 
             
         except ExecutionAbort as e:
             flash(str(e), "error")
             return redirect(url_for('signin'))
-        
         return redirect(url_for('index'))
-    
-    return render_template("signin.html", article=Article, Username=user)
+
+    return render_template("signin.html", article=Article, Username=user, logged_in = True)
 
 
 @app.route('/button_pressed', methods=['POST'])
@@ -62,34 +87,6 @@ def button_pressed():
     else:
         return jsonify({"status": "success", "id": id_of_button_pressed, "win" : "False"})
         ##game lose
-
-
-
-
-
-@app.route('/index', methods=['GET', 'POST'])
-def index():
-    if not session.get("user_id"):
-        flash("Please sign in first.", "error")
-        return redirect(url_for('signin'))
-    
-    if request.method == 'POST':
-        action = request.form.get("action")
-        
-        try:
-            if action == "logout":
-                session["user_id"] = None
-                flash("User logged out.", "success")
-            elif action == "delete account":
-                deleteUser(session["user_id"])
-                session["user_id"] = None
-                flash("User account deleted.", "success")
-        except ExecutionAbort as e:
-            flash(str(e), "error")
-
-        return redirect(url_for('index'), article=Article, Username=user)
-
-    return render_template("index.html", article=Article, Username=user)
 
 
 if __name__ == '__main__':
