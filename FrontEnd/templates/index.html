@@ -11,7 +11,6 @@
       <h1>Welcome to the One-Ion</h1>
 
         <div class="grid-container">
-          {% for article in articles %}
               <div class="vertical-box">
                   <div class = "article-title">
                       {{ article[0] }}
@@ -25,19 +24,36 @@
                   </div>
 
               </div>
-          {% endfor %}
         </div>
 
       <!-- <p class="debug"> DEBUG </p> -->
     </div>
 
     <button class="signin-button" onclick="toggleSigninWindow()">
-      {{ Username }}
+      {{ User[0] }}
     </button>
 
     <div class="signin-window" id="signinWindow">
       <form action="#" method="POST">
-        <h2>Hello {{ Username }}</h2>
+        <div class = "account-content">
+          <h2>Hello {{ User[0] }}</h2>
+          <p> Score : {{ User[1] }}</p>
+          <p> Best Score : {{ User[2] }}</p>
+          <p> Streak : {{ User[3] }}</p>
+
+          <!-- Dont know what to do with leaderboard yet gimme a sec -->
+          <br> 
+
+          <div class = "leaderboard">
+            <h5> leaderboard </h5>
+            {% for entry in User[4] %}
+              <p>
+                {{ entry[0] }} - {{ entry [1] }}    {{ entry[2] }}
+              </p>
+            {% endfor %}
+          </div>
+          <br>
+        </div>
         <div class="button-container">
           <button type="submit" class="signin-btn" name="action" value="logout">Log Out</button>
           <button type="submit" class="signup-btn" name="action" value="delete account">Delete Account</button>
@@ -47,7 +63,7 @@
 
     <div class="overlay" id="overlay"></div>
     <div class="popup" id="popup">
-        <h2>You win !! </h2>
+        <h2>You Lose !!  </h2>
         <p>This is a simple popup!</p>
         <button id="close-popup-btn">Close</button>
     </div>

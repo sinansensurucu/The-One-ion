@@ -57,6 +57,21 @@ button {
   display: none;
 }
 
+.signin-window p{
+    font-size: 1rem; /* Bigger text */
+    font-weight: bold;
+    color: #4b4b4b; /* Dark gray for contrast */
+    margin: 10px 0;
+}
+
+.signin-window h2 {
+  font-size: 2rem; /* Large and bold */
+  font-weight: 900;
+  color: #4e4e4e; 
+  word-wrap: break-word; 
+  overflow-wrap: break-word; 
+}
+
 .signin-window form {
   display: flex;
   flex-direction: column;
@@ -84,7 +99,14 @@ button {
   background-color: #45a049;
 }
 
-  
+.leaderboard p{
+  font-size: 12px; /* Bigger text */
+  font-weight: bold;
+  color: #4b4b4b; /* Dark gray for contrast */
+  margin: 10px 0;
+}
+
+
 html, h1{
 
   width: 100%;

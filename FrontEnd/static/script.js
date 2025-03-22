@@ -71,7 +71,7 @@ document.getElementById('close-popup-btn').addEventListener('click', function() 
 document.querySelectorAll('.button').forEach(button => {
   button.addEventListener('click', function() {
       // Get the article title (article[0]) from the data-attribute
-      const article_id = button.getAttribute('button-type');
+      const button_id = button.getAttribute('button-type');
       
       // Send the value to the Flask server using a POST request
       fetch('/button_pressed', {
@@ -85,16 +85,22 @@ document.querySelectorAll('.button').forEach(button => {
       })
       .then(response => response.json())
       .then(data => {
-          if (data.status === 'success') {
-              // if (data.win === "True"){
-              //     document.getElementById('popup').innerText 
-              // }
-              document.getElementById('popup').style.display = 'block';
-              document.getElementById('overlay').style.display = 'block';
-          } else {
+        if (data.status === 'success') {
+            let popup = document.getElementById('popup');
+            let popupText = popup.querySelector('h2'); // Select the <h2> inside #popup
 
-          }
-      })
+            // Change text based on win condition
+            if (data.win === "True") {
+                popupText.innerText = "You Win !!";
+            } else {
+                popupText.innerText = "You Lose !!";
+            }
+
+            // Show the popup
+            popup.style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+        }
+    })
       .catch(error => console.error('Error:', error));
   });
 });

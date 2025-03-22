@@ -83,7 +83,8 @@ def __createUserData__(email, user_id):
         "totalScore" : 0,
         "bestScore" : 0,
         "globalRanking" : len(db.collection("users").get()) + 1,
-        "readArticles" : []
+        "readArticles" : [],
+        "readStatistics" : []
     }
     db.collection("users").document(user_id).set(userData)
     print("[DATA] Successfully created user data fields.")
@@ -192,29 +193,92 @@ def getGlobalRanking(user_id):
     except:
         raise ExecutionAbort("[DATA] Error while fetching user's ranking.")
 
-#Article Functionality
+def getUserEmail(user_id):
+    if user_id is None:
+        raise ExecutionAbort("[DATA] Cannot get email data for user that is not signed in.")
+    
+    try:
+        userSnapshot = db.collection("users").document(user_id).get().to_dict()
+        print("[DATA] Successfully fetched user's email.")
+        return userSnapshot.get("userEmail", user_id)
+    except:
+        raise ExecutionAbort("[DATA] Error while fetching user's email.")
+
+#Article and Statistics Functionality
 
 #returns single article that user hasn't solved (if solved all, returns a random article) 
-#as string as tuple of (title, content, link), it also marks the returned article as read
+#as string as tuple of (title, content, link, answer), it also marks the returned article as read
+#save answer return value to check against user answer.
 def getArticleToSolve(user_id):
     if user_id is None:
         raise ExecutionAbort("[DATA] Cannot get article for user that is not signed in.")
      
     try:
-        solvedArticleIDs = __getArticlesSolved__(user_id)
+        solvedArticleIDs = sorted(__getArticlesSolved__(user_id))
 
-        allArticleIDs = __getAllArticles__()
+        allArticleIDs = sorted(__getAllArticles__())
+
+        if solvedArticleIDs == allArticleIDs:
+            return random.choice(allArticleIDs)
 
         availableArticles = [article for article in allArticleIDs if article not in solvedArticleIDs]
         
-        articleToSolve = random.choice(allArticleIDs) if not availableArticles else random.choice(availableArticles) 
+        articleToSolve = random.choice(availableArticles) 
      
-        __addArticleAsSolved__(articleToSolve)
+        __addArticleAsSolved__(user_id, articleToSolve)
 
         return __getArticleByID__(articleToSolve)
 
     except:
         raise ExecutionAbort("[DATA] Error while fetching user's available article data.")
+    
+def getStatisticToSolve(user_id):
+    if user_id is None:
+        raise ExecutionAbort("[DATA] Cannot get statistic for user that is not signed in.")
+     
+    try:
+        solvedStatisticIDs = sorted(__getArticlesSolved__(user_id))
+
+        allStatisticsIDs = sorted(__getAllStatistics__())
+
+        if solvedStatisticIDs == allStatisticsIDs:
+            return random.choice(allStatisticsIDs)
+
+        availableStatistics = [article for article in allStatisticsIDs if article not in solvedStatisticIDs]
+        
+        statisticToSolve = random.choice(availableStatistics) 
+     
+        __addArticleAsSolved__(user_id, statisticToSolve)
+
+        return __getStatisticByID__(statisticToSolve)
+
+    except:
+        raise ExecutionAbort("[DATA] Error while fetching user's available article data.")
+
+#returns a list of tuples containing (rank, userEmail, and userScore) for the ranks
+def getLeaderboard():
+    try:
+        userSnapshot = db.collection("users").get()
+
+        user_scores = []
+
+        for doc in userSnapshot:
+            data = doc.to_dict()
+            if data is None:
+                continue
+            score = data.get("totalScore", 0)
+            user_scores.append((doc.id, score))
+
+        user_scores = sorted(user_scores, key = lambda x: x[1], reverse = True)
+
+        results = [(rank, getUserEmail(uid), score) for rank, (uid, score) in enumerate(user_scores, start = 1)]
+
+        print("[DATA] Successfully fetched user's ranking.")
+
+        return results
+            
+    except:
+        print("[DATA] Error while fetching leaderboard.")
 
 #METHODS BELOW ARE NOT FOR FRONTEND CALLS
 def __getAllArticles__():
@@ -231,8 +295,9 @@ def __getArticleByID__(article_id):
     articleTitle = articleSnapshot.get("title")
     articleContent = articleSnapshot.get("content")
     articleLink = articleSnapshot.get("link")
+    articleAnswer = articleSnapshot.get("answer")
 
-    return articleTitle, articleContent, articleLink
+    return articleTitle, articleContent, articleLink, articleAnswer
 
 def __getArticlesSolved__(user_id):
     if user_id is None:
@@ -256,3 +321,43 @@ def __addArticleAsSolved__(user_id, article_id):
 
     except:
         raise ExecutionAbort("[DATA] Error while fetching user's article data.")
+    
+def __getAllStatistics__():
+    statisticsSnapshot = db.collection("statistics").get()
+
+    return [s.id for s in statisticsSnapshot]
+
+def __getStatisticByID__(statistic_id):
+    if statistic_id is None:
+        raise ExecutionAbort("[DATA] Cannot get statistic for non-existent article id.")
+
+    statisticSnapshot = db.collection("articles").document(statistic_id).get().to_dict()
+
+    statisticContent = statisticSnapshot.get("content")
+    statisticLink = statisticSnapshot.get("link")
+    statisticAnswer = statisticSnapshot.get("answer")
+
+    return statisticContent, statisticLink, statisticAnswer
+
+def __getStatisticsSolved__(user_id):
+    if user_id is None:
+        raise ExecutionAbort("[DATA] Cannot get statistic data for user that is not signed in.")
+    
+    try:
+        userSnapshot = db.collection("users").document(user_id).get().to_dict()
+        print("[DATA] Successfully fetched user's read statistics.")
+
+        return userSnapshot.get("readStatistics", [])
+    except:
+        raise ExecutionAbort("[DATA] Error while fetching user's statistics data.")
+    
+def __addStatisticAsSolved__(user_id, statistic_id):
+    if user_id is None:
+        raise ExecutionAbort("[DATA] Cannot get statistic data for user that is not signed in.")
+    
+    try:
+        db.collection("users").document(user_id).update({"readStatistics": (__getStatisticsSolved__(user_id) + [statistic_id])})
+        print("[DATA] Successfully updated user's read statistics.")
+
+    except:
+        raise ExecutionAbort("[DATA] Error while fetching user's statistics data.")
