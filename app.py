@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 from Backend.DatabaseLogic import ExecutionAbort, signInUser, createUser, deleteUser
+from Backend.GameLogic import GameLogic
+import time
 
 app = Flask(
     __name__,
@@ -103,6 +105,39 @@ def index():
         return redirect(url_for('index'), articles=Articles, Username=Username)
 
     return render_template("index.html", articles=Articles, Username=Username)
+
+@app.route('/game', methods=['GET', 'POST'])
+def game():
+    if not session.get("user_id"):
+        flash("Please sign in first.", "error")
+        return redirect(url_for('signin'))
+    
+    game_logic = GameLogic(session["user_id"])
+    
+    if request.method == 'POST':
+        # Get the user's answer ("real", "fake", or "onion")
+        user_answer = request.form.get("answer")
+        
+        # Fetch the correct answer (replace with actual logic)
+        article_id = request.form.get("article_id")  # Pass article_id from frontend
+        correct_answer = get_correct_answer(article_id)  # need to implement this function
+        
+        # Check if the user's answer is correct
+        is_correct = user_answer == correct_answer
+        
+        # Calculate the score
+        score = game_logic.calculate_score(is_correct)
+        
+        # Update the user's profile
+        game_logic.update_user_profile(is_correct, score)
+        
+        # Provide feedback to the user
+        flash(f"Your score: {score}", "success")
+        return redirect(url_for('game'))
+    
+    # Fetch a new article for the user to solve
+    article = getArticleToSolve(session["user_id"])
+    return render_template("game.html", article=article)
 
 
 if __name__ == '__main__':
