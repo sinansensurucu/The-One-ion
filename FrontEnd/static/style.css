@@ -128,7 +128,7 @@ body {  /*how to do background thing?? havent figured out yet*/
   padding-inline: 2%;
 
   width: 80%;
-  height: 80%;
+  height: 60%;
   background: rgb(255, 255, 255);
   grid-template-columns: repeat(1, 1fr);
   justify-content: center;
@@ -154,6 +154,21 @@ body {  /*how to do background thing?? havent figured out yet*/
   overflow: hidden; 
   border: 2px solid black;
 }
+
+.mode {
+  display: block;
+  text-align: center;
+  font-size: 24px;
+  margin-top: 12px;
+  width: 100%;
+  height: 90%;
+}
+
+.hidden {
+  display: none;
+}
+
+
 
 /* .article{
   width: 100;
@@ -231,13 +246,19 @@ body {  /*how to do background thing?? havent figured out yet*/
   cursor: pointer;
 }
 
+.statistic {
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+}
+
 .button_container {
   display: grid;
   padding-inline: 2%;
 
   width: 80%;
   height: 80%;
-  grid-template-columns: repeat(3, 1fr);
+  /* grid-template-columns: repeat(3, 1fr); */
   justify-content: center;
   align-items: center;
   margin: auto;
@@ -246,7 +267,13 @@ body {  /*how to do background thing?? havent figured out yet*/
   left: 50%;
   transform: translate(-50%, -50%);
 }
+.button_container:has(:nth-child(2):last-child) {
+  grid-template-columns: repeat(2, 1fr); /* Use 2 columns if there are 2 buttons */
+}
 
+.button_container:has(:nth-child(3)) {
+  grid-template-columns: repeat(3, 1fr); /* Use 3 columns if there are 3 buttons */
+}
 
 .login_button-container, .account_button-container {
   display: flex;

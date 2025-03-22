@@ -19,6 +19,10 @@ document.addEventListener('click', function(event) {
   }
 });
 
+function switchMode(mode) {
+  document.querySelectorAll('.mode').forEach(el => el.classList.add('hidden'));
+  document.getElementById(mode).classList.remove('hidden');
+}
 
 
 
