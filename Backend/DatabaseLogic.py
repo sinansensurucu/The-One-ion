@@ -83,7 +83,8 @@ def __createUserData__(email, user_id):
         "totalScore" : 0,
         "bestScore" : 0,
         "globalRanking" : len(db.collection("users").get()) + 1,
-        "readArticles" : []
+        "readArticles" : [],
+        "readStatistics" : []
     }
     db.collection("users").document(user_id).set(userData)
     print("[DATA] Successfully created user data fields.")
@@ -203,7 +204,7 @@ def getUserEmail(user_id):
     except:
         raise ExecutionAbort("[DATA] Error while fetching user's email.")
 
-#Article Functionality
+#Article and Statistics Functionality
 
 #returns single article that user hasn't solved (if solved all, returns a random article) 
 #as string as tuple of (title, content, link, answer), it also marks the returned article as read
@@ -227,6 +228,29 @@ def getArticleToSolve(user_id):
         __addArticleAsSolved__(user_id, articleToSolve)
 
         return __getArticleByID__(articleToSolve)
+
+    except:
+        raise ExecutionAbort("[DATA] Error while fetching user's available article data.")
+    
+def getStatisticToSolve(user_id):
+    if user_id is None:
+        raise ExecutionAbort("[DATA] Cannot get statistic for user that is not signed in.")
+     
+    try:
+        solvedStatisticIDs = sorted(__getArticlesSolved__(user_id))
+
+        allStatisticsIDs = sorted(__getAllStatistics__())
+
+        if solvedStatisticIDs == allStatisticsIDs:
+            return random.choice(allStatisticsIDs)
+
+        availableStatistics = [article for article in allStatisticsIDs if article not in solvedStatisticIDs]
+        
+        statisticToSolve = random.choice(availableStatistics) 
+     
+        __addArticleAsSolved__(user_id, statisticToSolve)
+
+        return __getStatisticByID__(statisticToSolve)
 
     except:
         raise ExecutionAbort("[DATA] Error while fetching user's available article data.")
@@ -297,3 +321,43 @@ def __addArticleAsSolved__(user_id, article_id):
 
     except:
         raise ExecutionAbort("[DATA] Error while fetching user's article data.")
+    
+def __getAllStatistics__():
+    statisticsSnapshot = db.collection("statistics").get()
+
+    return [s.id for s in statisticsSnapshot]
+
+def __getStatisticByID__(statistic_id):
+    if statistic_id is None:
+        raise ExecutionAbort("[DATA] Cannot get statistic for non-existent article id.")
+
+    statisticSnapshot = db.collection("articles").document(statistic_id).get().to_dict()
+
+    statisticContent = statisticSnapshot.get("content")
+    statisticLink = statisticSnapshot.get("link")
+    statisticAnswer = statisticSnapshot.get("answer")
+
+    return statisticContent, statisticLink, statisticAnswer
+
+def __getStatisticsSolved__(user_id):
+    if user_id is None:
+        raise ExecutionAbort("[DATA] Cannot get statistic data for user that is not signed in.")
+    
+    try:
+        userSnapshot = db.collection("users").document(user_id).get().to_dict()
+        print("[DATA] Successfully fetched user's read statistics.")
+
+        return userSnapshot.get("readStatistics", [])
+    except:
+        raise ExecutionAbort("[DATA] Error while fetching user's statistics data.")
+    
+def __addStatisticAsSolved__(user_id, statistic_id):
+    if user_id is None:
+        raise ExecutionAbort("[DATA] Cannot get statistic data for user that is not signed in.")
+    
+    try:
+        db.collection("users").document(user_id).update({"readStatistics": (__getStatisticsSolved__(user_id) + [statistic_id])})
+        print("[DATA] Successfully updated user's read statistics.")
+
+    except:
+        raise ExecutionAbort("[DATA] Error while fetching user's statistics data.")
