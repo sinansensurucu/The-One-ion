@@ -241,8 +241,6 @@ def getStatisticToSolve(user_id):
 
         allStatisticsIDs = sorted(__getAllStatistics__())
 
-        print(allStatisticsIDs)
-
         if solvedStatisticIDs == allStatisticsIDs:
             return random.choice(allStatisticsIDs)
 
