@@ -332,3 +332,14 @@ body {  /*how to do background thing?? havent figured out yet*/
   background-color: #007bff;
   color: white;
 }
+
+.warning {
+  background-color: gray;
+  border: 3px solid black;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 30%;
+  height: 20%;
+  margin: 0 auto;
+  margin-top: 30px;
+}
