@@ -46,15 +46,15 @@ def index():
             flash(str(e), "error")
         return redirect(url_for('signin'))
     
-    return render_template("index.html", article=Article, User=user, logged_in=logged_in)
-    #return render_template("index.html", article=Article, statistic=Statistic,User=user, logged_in=logged_in)
+    # return render_template("index.html", article=Article, User=user, logged_in=logged_in)
+    return render_template("index.html", article=Article, statistic=Statistic,User=user, logged_in=logged_in)
 
 @app.route('/signin', methods=['GET', 'POST'])
 def signin():
     global Article, Statistic, user, logged_in
     if session.get("user_id"):
         Article = getArticleToSolve(session["user_id"]) 
-        #Statistic = getStatisticToSolve(session["user_id"])
+        Statistic = getStatisticToSolve(session["user_id"])
         user = (getUserEmail(session["user_id"]), getUserTotalScore(session["user_id"]), getUserBestScore(session["user_id"]), getUserStreak(session["user_id"]), getLeaderboard())
 
         return redirect(url_for('index'))
@@ -83,8 +83,8 @@ def signin():
             return redirect(url_for('signin'))
         return redirect(url_for('index'))
     
-    return render_template("signin.html", article=Article, User=user, logged_in=logged_in)
-    #return render_template("signin.html", article=Article, statistic=Statistic, User=user, logged_in = True)
+    # return render_template("signin.html", article=Article, User=user, logged_in=logged_in)
+    return render_template("signin.html", article=Article, statistic=Statistic, User=user, logged_in = True)
 
 
 @app.route('/button_pressed', methods=['POST'])
@@ -93,7 +93,7 @@ def button_pressed():
     button_pressed = True 
 
     id_of_button_pressed = request.form['button_id']
-    if Article[3] == id_of_button_pressed:
+    if Article[2] == id_of_button_pressed:
         return jsonify({"status": "success", "id": id_of_button_pressed, "win" : "True"})
         
         ##game win
@@ -116,7 +116,7 @@ def game():
         # Fetch the correct answer (replace with actual logic)
         article_id = request.form.get("article_id")  # Pass article_id from frontend
         correct_answer = get_correct_answer(article_id)  # need to implement this function
-        
+
         # Check if the user's answer is correct
         is_correct = user_answer == correct_answer
         
@@ -133,6 +133,8 @@ def game():
     # Fetch a new article for the user to solve
     article = getArticleToSolve(session["user_id"])
     return render_template("game.html", article=article)
+
+
 
 
 if __name__ == '__main__':
