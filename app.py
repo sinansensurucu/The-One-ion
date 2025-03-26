@@ -55,6 +55,7 @@ def signin():
     global Article, Statistic, user, logged_in, attempted_log_in
     if session.get("user_id"):
         Article = getArticleToSolve(session["user_id"]) 
+        print(Article[0])
         Statistic = getStatisticToSolve(session["user_id"])
         user = (getUserEmail(session["user_id"]), getUserTotalScore(session["user_id"]), getUserBestScore(session["user_id"]), getUserStreak(session["user_id"]), getLeaderboard())
 
@@ -96,7 +97,7 @@ def button_pressed():
     button_pressed = True 
 
     id_of_button_pressed = request.form['button_id']
-    if Article[2] == id_of_button_pressed:
+    if Article[3] == id_of_button_pressed:
         return jsonify({"status": "success", "id": id_of_button_pressed, "win" : "True"})
         
         ##game win

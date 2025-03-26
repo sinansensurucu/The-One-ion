@@ -124,11 +124,8 @@ body {  /*how to do background thing?? havent figured out yet*/
   background-repeat: repeat;
   overflow: none;
 }
-
-.grid-container{
+.grid-container {
   display: grid;
-  padding-inline: 2%;
-  
   width: 80%;
   height: 80%;
   background: rgb(255, 255, 255);
@@ -141,22 +138,25 @@ body {  /*how to do background thing?? havent figured out yet*/
   top: 20%; /* Offset from the top by 10% */
   left: 50%;
   transform: translateX(-50%); /* Only move it back horizontally */
+  padding: 10px; /* Ensures content inside has some breathing room */
+  box-sizing: border-box; /* Includes padding in width calculations */
 }
 
 .vertical-box {
-  width: 100%;
-  max-height: 90%;
-  height: 90%;
-  background: rgb(50, 146, 72);
   display: flex;
-  flex-direction: column;  /* Stack title and content vertically */
-  justify-content: flex-start;  /* Align items at the top */
+  flex-direction: column;
+  justify-content: space-between; /* Keeps title, content, and buttons spaced */
   align-items: center;
-  color: white;
-  font-size: 24px;
-  overflow: hidden; 
+  width: 95%; /* Adjusted to leave space on left and right */
+  height: 90%; /* Makes sure it fits within the grid */
+  background: rgb(50, 146, 72);
   border: 2px solid black;
+  color: white;
+  padding: 10px; /* Ensures equal spacing inside */
+  margin: auto; /* Centers it properly inside the grid */
+  box-sizing: border-box; /* Ensures padding doesn’t affect width */
 }
+
 
 .mode {
   display: block;
@@ -194,7 +194,7 @@ body {  /*how to do background thing?? havent figured out yet*/
   overflow-y: scroll;
   position: absolute;
   top: 22%; /* Aligns to the top */
-  width: 90%;
+  max-width: 90%;
 }
 
 
