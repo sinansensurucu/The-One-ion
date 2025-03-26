@@ -9,11 +9,14 @@
   <body>
     <h1>Welcome to the One-Ion</h1>
     <div class="mode-select">
-      <button onclick="switchMode('standard-mode')">Standard Mode</button>
-      <button onclick="switchMode('daily-mode')">Daily Challenge</button>
-      <button onclick="switchMode('statistic-mode')">Statistic Mode</button>
+      <button id="standard-mode-btn", onclick="switchMode('standard-mode')">Standard Mode</button>
+      <button id="daily-mode-btn", onclick="switchMode('daily-mode')">Daily Challenge</button>
+      <button id="statistic-mode-btn", onclick="switchMode('statistic-mode')">Statistic Mode</button>
     </div>
     <div class="grid-container">
+      <div id="timer">
+        Timer Placeholder i have no idea how GameLogic is called
+      </div>
       <div id="standard-mode" class="mode">Standard Mode
         <div class="vertical-box">
           <div class="article-title">

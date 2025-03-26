@@ -92,7 +92,7 @@ def signin():
 
 @app.route('/button_pressed', methods=['POST'])
 def button_pressed():
-    
+    timeResetButtonIDs = ["standard-mode-btn", "daily-mode-btn", "statistic-mode-btn",]
     button_pressed = True 
 
     id_of_button_pressed = request.form['button_id']
@@ -103,6 +103,7 @@ def button_pressed():
     else:
         return jsonify({"status": "success", "id": id_of_button_pressed, "win" : "False"})
         ##game lose
+    
 
 @app.route('/game', methods=['GET', 'POST'])
 def game():
