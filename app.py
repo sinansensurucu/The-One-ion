@@ -47,7 +47,7 @@ def index():
             flash(str(e), "error")
         return redirect(url_for('signin'))
     
-    # return render_template("index.html", article=Article, User=user, logged_in=logged_, inattempted=attempted_log_in)
+    # return render_template("index.html", article=Article, User=user, logged_in=logged_in,attempted=attempted_log_in)
     return render_template("index.html", article=Article, statistic=Statistic,User=user, logged_in=logged_in, attempted=attempted_log_in)
 
 @app.route('/signin', methods=['GET', 'POST'])
@@ -86,8 +86,8 @@ def signin():
             return redirect(url_for('signin'))
         return redirect(url_for('index'))
     
-    #return render_template("signin.html", article=Article, User=user, logged_in=logged_inattempted=attempted_log_in)
-    return render_template("signin.html", article=Article, statistic=Statistic, User=user, logged_in = True, attempted=attempted_log_in)
+    #return render_template("signin.html", article=Article, User=user, logged_in=logged_in, attempted=attempted_log_in)
+    return render_template("signin.html", article=Article, statistic=Statistic, User=user, logged_in = logged_in, attempted=attempted_log_in)
 
 
 @app.route('/button_pressed', methods=['POST'])
