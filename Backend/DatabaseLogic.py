@@ -237,9 +237,11 @@ def getStatisticToSolve(user_id):
         raise ExecutionAbort("[DATA] Cannot get statistic for user that is not signed in.")
      
     try:
-        solvedStatisticIDs = sorted(__getArticlesSolved__(user_id))
+        solvedStatisticIDs = sorted(__getStatisticsSolved__(user_id))
 
         allStatisticsIDs = sorted(__getAllStatistics__())
+
+        print(allStatisticsIDs)
 
         if solvedStatisticIDs == allStatisticsIDs:
             return random.choice(allStatisticsIDs)
