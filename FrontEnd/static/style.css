@@ -145,6 +145,7 @@ body {  /*how to do background thing?? havent figured out yet*/
 
 .vertical-box {
   width: 100%;
+  max-height: 90%;
   height: 90%;
   background: rgb(50, 146, 72);
   display: flex;
@@ -187,10 +188,13 @@ body {  /*how to do background thing?? havent figured out yet*/
 }
 
 .article-content {
-  font-size: 20px; /* Larger content */
+  font-size: 18px; /* Larger content */
   text-align: left;
+  max-height: 70%; /* Ensures at least 10% space at the bottom */
   overflow-y: scroll;
-  padding: 10px; /* Optional: Adds some spacing inside the container */
+  position: absolute;
+  top: 22%; /* Aligns to the top */
+  width: 90%;
 }
 
 
