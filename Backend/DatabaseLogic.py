@@ -244,11 +244,11 @@ def getStatisticToSolve(user_id):
         if solvedStatisticIDs == allStatisticsIDs:
             return random.choice(allStatisticsIDs)
 
-        availableStatistics = [article for article in allStatisticsIDs if article not in solvedStatisticIDs]
+        availableStatistics = [statistic for statistic in allStatisticsIDs if statistic not in solvedStatisticIDs]
         
         statisticToSolve = random.choice(availableStatistics) 
      
-        __addArticleAsSolved__(user_id, statisticToSolve)
+        __addStatisticAsSolved__(user_id, statisticToSolve)
 
         return __getStatisticByID__(statisticToSolve)
 
