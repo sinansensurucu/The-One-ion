@@ -226,7 +226,6 @@ def getArticleToSolve(user_id):
         articleToSolve = random.choice(availableArticles) 
      
         __addArticleAsSolved__(user_id, articleToSolve)
-
         return __getArticleByID__(articleToSolve)
 
     except:
