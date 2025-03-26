@@ -15,12 +15,10 @@ Statistic = None
 user = None
 button_pressed = False
 id_of_button_pressed = None
-logged_in = False
-attempted_log_in = False
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    global logged_in, Article, Statistic, user, attempted_log_in
+    global logged_in, Article, Statistic, user
     if not session.get("user_id"):
         logged_in = False
     else:
@@ -42,19 +40,20 @@ def index():
                 session["user_id"] = None
                 flash("User account deleted.", "success")
             logged_in = False
-            attempted_log_in = False
+            
         except ExecutionAbort as e:
             flash(str(e), "error")
         return redirect(url_for('signin'))
     
-    # return render_template("index.html", article=Article, User=user, logged_in=logged_, inattempted=attempted_log_in)
-    return render_template("index.html", article=Article, statistic=Statistic,User=user, logged_in=logged_in, attempted=attempted_log_in)
+    # return render_template("index.html", article=Article, User=user, logged_in=logged_in)
+    return render_template("index.html", article=Article, statistic=Statistic,User=user, logged_in=logged_in)
 
 @app.route('/signin', methods=['GET', 'POST'])
 def signin():
-    global Article, Statistic, user, logged_in, attempted_log_in
+    global Article, Statistic, user, logged_in
     if session.get("user_id"):
         Article = getArticleToSolve(session["user_id"]) 
+        # Article = (title, content, link, type) access Article[3] to see if real, fake or onion
         Statistic = getStatisticToSolve(session["user_id"])
         user = (getUserEmail(session["user_id"]), getUserTotalScore(session["user_id"]), getUserBestScore(session["user_id"]), getUserStreak(session["user_id"]), getLeaderboard())
 
@@ -75,19 +74,17 @@ def signin():
                 user_id = createUser(email, password)
                 session['user_id'] = user_id
                 flash("Registration and login successful!", "success")
-            attempted_log_in = False
             logged_in = True
             user = getUserEmail(session["user_id"])
             Article = getArticleToSolve(user) 
             
         except ExecutionAbort as e:
-            attempted_log_in = True
             flash(str(e), "error")
             return redirect(url_for('signin'))
         return redirect(url_for('index'))
     
-    #return render_template("signin.html", article=Article, User=user, logged_in=logged_inattempted=attempted_log_in)
-    return render_template("signin.html", article=Article, statistic=Statistic, User=user, logged_in = True, attempted=attempted_log_in)
+    # return render_template("signin.html", article=Article, User=user, logged_in=logged_in)
+    return render_template("signin.html", article=Article, statistic=Statistic, User=user, logged_in = True)
 
 
 @app.route('/button_pressed', methods=['POST'])
@@ -96,10 +93,12 @@ def button_pressed():
     button_pressed = True 
 
     id_of_button_pressed = request.form['button_id']
-    if Article[2] == id_of_button_pressed:
+    if Article[3] == id_of_button_pressed:
         return jsonify({"status": "success", "id": id_of_button_pressed, "win" : "True"})
         
         ##game win
+    elif Statistic[2] == id_of_button_pressed:
+        return jsonify({"status": "success", "id": id_of_button_pressed, "win" : "True"})
     else:
         return jsonify({"status": "success", "id": id_of_button_pressed, "win" : "False"})
         ##game lose
@@ -136,9 +135,6 @@ def game():
     # Fetch a new article for the user to solve
     article = getArticleToSolve(session["user_id"])
     return render_template("game.html", article=article)
-
-
-
 
 if __name__ == '__main__':
     app.run(debug=True)
