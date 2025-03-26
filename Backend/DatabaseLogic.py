@@ -237,18 +237,18 @@ def getStatisticToSolve(user_id):
         raise ExecutionAbort("[DATA] Cannot get statistic for user that is not signed in.")
      
     try:
-        solvedStatisticIDs = sorted(__getArticlesSolved__(user_id))
+        solvedStatisticIDs = sorted(__getStatisticsSolved__(user_id))
 
         allStatisticsIDs = sorted(__getAllStatistics__())
 
         if solvedStatisticIDs == allStatisticsIDs:
             return random.choice(allStatisticsIDs)
 
-        availableStatistics = [article for article in allStatisticsIDs if article not in solvedStatisticIDs]
+        availableStatistics = [statistic for statistic in allStatisticsIDs if statistic not in solvedStatisticIDs]
         
         statisticToSolve = random.choice(availableStatistics) 
      
-        __addArticleAsSolved__(user_id, statisticToSolve)
+        __addStatisticAsSolved__(user_id, statisticToSolve)
 
         return __getStatisticByID__(statisticToSolve)
 
