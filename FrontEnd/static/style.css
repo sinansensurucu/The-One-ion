@@ -1,8 +1,8 @@
 body {
   font-family: Arial, sans-serif;
   text-align: center;
-  /* margin: 50px; */
 }
+
 h1 {
   color: #333;
 }
@@ -11,18 +11,6 @@ button {
   font-size: 16px;
 }
 
-/* .middle-ground {
-  background-color: white;
-  width: 80%;
-  max-width: 1200px;
-  min-height: 100vh;
-  max-height: 1200px;
-  margin: 50px auto;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-} */
-
 .signin-button {
   position: fixed;
   top: 20px;
@@ -30,15 +18,14 @@ button {
   background-color: #4caf50;
   color: white;
   border: none;
-  border-radius: 15px;
-  width: 15 0px;
+  border-radius: 50%;
+  width: 60px;
   height: 60px;
   font-size: 15px;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .signin-button:hover {
@@ -51,21 +38,20 @@ button {
   right: 20px;
   background-color: white;
   padding: 20px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   border-radius: 8px;
   width: 250px;
   display: none;
 }
 
 .signin-window p{
-    font-size: 1rem; /* Bigger text */
+    font-size: 1rem; 
     font-weight: bold;
-    color: #4b4b4b; /* Dark gray for contrast */
+    color: #4b4b4b;
     margin: 10px 0;
 }
 
 .signin-window h2 {
-  font-size: 2rem; /* Large and bold */
+  font-size: 2rem;
   font-weight: 900;
   color: #4e4e4e; 
   word-wrap: break-word; 
@@ -100,29 +86,23 @@ button {
 }
 
 .leaderboard{
-  max-height: 150px; /* Adjust height as needed */
+  max-height: 150px; 
   overflow-y: auto;
-  font-size: 12px; /* Bigger text */
+  font-size: 12px;
   font-weight: bold;
-  color: #4b4b4b; /* Dark gray for contrast */  
+  color: #4b4b4b; 
   margin: 10px 0;
 }
 
-
 html, h1{
-
   width: 100%;
   text-align: center; 
   overflow: auto;
-
- 
 }
 
-body {  /*how to do background thing?? havent figured out yet*/
-  background-image: url("../assets/background.png");
-  background-size: 128px 128px;
-  background-repeat: repeat;
-  overflow: none;
+body { 
+  background: #83E278;
+  font-family: 'Trebuchet MS', sans-serif;
 }
 
 .grid-container{
@@ -136,16 +116,15 @@ body {  /*how to do background thing?? havent figured out yet*/
   justify-content: center;
   align-items: center;
   border: 2px solid black;
-  margin: auto; /* Horizontally centers the container */
+  margin: auto;
   position: absolute;
-  top: 20%; /* Offset from the top by 10% */
+  top: 20%;
   left: 50%;
-  transform: translateX(-50%); /* Only move it back horizontally */
+  transform: translateX(-50%);
 }
 
 .vertical-box {
   width: 100%;
-  max-height: 90%;
   height: 90%;
   background: rgb(50, 146, 72);
   display: flex;
@@ -171,34 +150,21 @@ body {  /*how to do background thing?? havent figured out yet*/
   display: none;
 }
 
-
-
-/* .article{
-  width: 100;
-  overflow: auto; 
-
-} */
-
 .article-title {
   font-weight: bold;
   font-size: 22px; /* Smaller title */
   margin-top: 2%;  
   margin-bottom: 2%;  
   text-align: center; 
+  font-family: 'Trebuchet MS', sans-serif;
 }
 
 .article-content {
-  font-size: 18px; /* Larger content */
+  font-size: 20px; /* Larger content */
   text-align: left;
-  max-height: 70%; /* Ensures at least 10% space at the bottom */
   overflow-y: scroll;
-  position: absolute;
-  top: 22%; /* Aligns to the top */
-  width: 90%;
+  padding: 10px;
 }
-
-
-/* If you decide to externalize the CSS, place the following in your styles.css */
 
 .popup {
   display: none;
@@ -210,7 +176,6 @@ body {  /*how to do background thing?? havent figured out yet*/
   background-color: rgba(0, 0, 0, 0.7);
   color: white;
   border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   z-index: 1000;
 }
 
@@ -232,7 +197,6 @@ body {  /*how to do background thing?? havent figured out yet*/
   right: 20px;
   background-color: white;
   padding: 20px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   border-radius: 8px;
   width: 250px;
   display: none;
@@ -274,6 +238,7 @@ body {  /*how to do background thing?? havent figured out yet*/
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
 .button_container:has(:nth-child(2):last-child) {
   grid-template-columns: repeat(2, 1fr); /* Use 2 columns if there are 2 buttons */
 }
@@ -301,12 +266,16 @@ body {  /*how to do background thing?? havent figured out yet*/
 
 
 .signin-container {
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -80%);
+
   max-width: 400px;
-  margin: 0 auto;
   padding: 20px;
   background-color: white;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .input-container {
@@ -323,16 +292,19 @@ body {  /*how to do background thing?? havent figured out yet*/
 }
 
 .button-container {
+  
   display: flex;
   justify-content: space-between;
 }
 
 .button-container button {
+  flex: 1;  /* Each button takes equal space */
   padding: 10px 20px;
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 5px;
   cursor: pointer;
+  gap: 10px
 }
 
 .button-container button[type="submit"]:hover {
@@ -341,12 +313,14 @@ body {  /*how to do background thing?? havent figured out yet*/
 }
 
 .warning {
-  background-color: gray;
-  border: 3px solid black;
-  border-radius: 5px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, +100%);
+
+  background-color: white;
+  border: 3px solid #A31621;
+  border-radius: 10px;
+  padding: 5px;
   cursor: pointer;
-  width: 30%;
-  height: 20%;
-  margin: 0 auto;
-  margin-top: 30px;
 }
