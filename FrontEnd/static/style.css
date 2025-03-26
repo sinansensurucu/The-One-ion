@@ -99,10 +99,12 @@ button {
   background-color: #45a049;
 }
 
-.leaderboard p{
+.leaderboard{
+  max-height: 150px; /* Adjust height as needed */
+  overflow-y: auto;
   font-size: 12px; /* Bigger text */
   font-weight: bold;
-  color: #4b4b4b; /* Dark gray for contrast */
+  color: #4b4b4b; /* Dark gray for contrast */  
   margin: 10px 0;
 }
 
@@ -126,9 +128,9 @@ body {  /*how to do background thing?? havent figured out yet*/
 .grid-container{
   display: grid;
   padding-inline: 2%;
-
+  
   width: 80%;
-  height: 60%;
+  height: 80%;
   background: rgb(255, 255, 255);
   grid-template-columns: repeat(1, 1fr);
   justify-content: center;
@@ -136,9 +138,9 @@ body {  /*how to do background thing?? havent figured out yet*/
   border: 2px solid black;
   margin: auto; /* Horizontally centers the container */
   position: absolute;
-  top: 50%;
+  top: 20%; /* Offset from the top by 10% */
   left: 50%;
-  transform: translate(-50%, -50%); /* Moves it back by half its width & height */
+  transform: translateX(-50%); /* Only move it back horizontally */
 }
 
 .vertical-box {
@@ -186,8 +188,8 @@ body {  /*how to do background thing?? havent figured out yet*/
 
 .article-content {
   font-size: 20px; /* Larger content */
-  text-align: center;
-  overflow: auto;
+  text-align: left;
+  overflow-y: scroll;
   padding: 10px; /* Optional: Adds some spacing inside the container */
 }
 
@@ -231,6 +233,7 @@ body {  /*how to do background thing?? havent figured out yet*/
   width: 250px;
   display: none;
 }
+
 
 .button {
   margin-top: auto;
