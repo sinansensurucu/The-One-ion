@@ -334,10 +334,9 @@ def __getStatisticByID__(statistic_id):
     statisticSnapshot = db.collection("articles").document(statistic_id).get().to_dict()
 
     statisticContent = statisticSnapshot.get("content")
-    statisticLink = statisticSnapshot.get("link")
     statisticAnswer = statisticSnapshot.get("answer")
 
-    return statisticContent, statisticLink, statisticAnswer
+    return statisticContent, statisticAnswer
 
 def __getStatisticsSolved__(user_id):
     if user_id is None:
