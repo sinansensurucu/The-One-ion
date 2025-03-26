@@ -38,9 +38,9 @@
 
           <div class="article-content">
             {{ article[1] }}
-            <div class="link">
-              {{ article[2] }}
-            </div>
+            <br>
+            {{ article[2] }}
+
           </div>
           <div class="button_container">
             <button class="button" button-type="Real">Real</button><button
@@ -52,9 +52,15 @@
       </div>
       <div id="statistic-mode" class="mode hidden">Statistic Mode
         <div class="vertical-box">
-          <div class="statistic">
-            <!-- placeholder statistic -->
-            {{ statistic }}
+          <div class="article-title">
+            {{ statistic[0] }}
+          </div>
+
+          <div class="article-content">
+            {{ statistic[1] }}
+            <br>
+            {{ statistic[2] }}
+
           </div>
           <div class="button_container">
             <button class="button" button-type="Real">Real</button>
