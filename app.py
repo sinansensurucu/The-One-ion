@@ -14,6 +14,7 @@ Article = None
 Statistic = None
 user = None
 button_pressed = False
+attempted_log_in = False
 id_of_button_pressed = None
 
 @app.route('/', methods=['GET', 'POST'])
@@ -93,7 +94,7 @@ def button_pressed():
     button_pressed = True 
 
     id_of_button_pressed = request.form['button_id']
-    if Article[3] == id_of_button_pressed:
+    print(Article)
     if Article[3] == id_of_button_pressed:
         return jsonify({"status": "success", "id": id_of_button_pressed, "win" : "True"})
         
