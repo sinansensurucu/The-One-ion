@@ -15,6 +15,7 @@ Statistic = None
 user = None
 button_pressed = False
 id_of_button_pressed = None
+logged_in = True
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
