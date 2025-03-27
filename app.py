@@ -39,10 +39,6 @@ def index():
         return redirect(url_for('signin'))
     else:
         logged_in = True
-        #updateInfo()
-        #Article = ("title", "bla bla bla", "www.youtube.com", "Fake")   ##temp values
-        #user = getUserEmail(session["user_id"])
-        #user = ("bloop", 1200, 13200, 7, [(1,"b@gmail.com", 23000), (2, "c@gmail.com", 4500), (3, "a@gmail.com", 4500)])
 
     
     if request.method == 'POST':
@@ -117,11 +113,27 @@ def button_pressed():
     else:
         return jsonify({"status": "success", "id": id_of_button_pressed, "win" : "False"})
         ##game lose
+
+@app.route('/next_article', methods=['POST'])
+def next_article():
+    # global Article, Statistic, user
+    # if not session.get("user_id"):
+    #     return jsonify({"status": "error", "message": "User not logged in"})
+
+    # Article = getArticleToSolve(session["user_id"])
+    # Statistic = getStatisticToSolve(session["user_id"])
+    
+    return jsonify({"status": "success", "url": url_for('signin')})
+
+
+
+
+
     
 @app.route('/time_over', methods=['POST'])
 def time_over():
     if not session.get("user_id"):
-        return jsonify({"message": "Please log in first."}), 403
+        return jsonify({"message": "Please log in first."})
     
     # Handle time-out logic (e.g., end game, reset question, etc.)
     return jsonify({"message": "Time is up! Try again."})

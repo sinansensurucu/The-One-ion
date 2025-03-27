@@ -123,11 +123,41 @@ window.onload = function () {
 
 const overlay = document.getElementById('overlay');
 const allPopups = document.querySelectorAll('.popup');
+const pop_up_btn = document.getElementById('close-popup-btn');
 
 overlay.addEventListener('click', () => {
+  next_article()
+});
+
+pop_up_btn.addEventListener('click', () => {
+  next_article()
+});
+
+
+
+function next_article(){
+  const overlay = document.getElementById('overlay');
+  const allPopups = document.querySelectorAll('.popup');
   allPopups.forEach(p => p.style.display = 'none');
   overlay.style.display = 'none';
-});
+  fetch('/next_article', {
+    method: 'POST',
+    body: new URLSearchParams({
+    }),
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log("Server Response:", data);  // Debugging
+
+    if (data.status === 'success') {
+      window.location.href = data.url;
+    }
+  })
+    .catch(error => console.error('Error:', error));
+}
 
   let timeLeft = 60; // Set the timer in seconds
   let timerElement;
@@ -141,7 +171,7 @@ overlay.addEventListener('click', () => {
       }
 
       let timerInterval = setInterval(() => {
-          if (timeLeft <= 0) {
+          if (timeLeft < 0) {
               clearInterval(timerInterval);
               document.getElementById("time-up-message").innerText = "Time's up!";
               sendTimeOverEvent();
