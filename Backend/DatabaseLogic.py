@@ -226,7 +226,6 @@ def getArticleToSolve(user_id):
         articleToSolve = random.choice(availableArticles) 
      
         __addArticleAsSolved__(user_id, articleToSolve)
-
         return __getArticleByID__(articleToSolve)
 
     except:
@@ -329,9 +328,9 @@ def __getAllStatistics__():
 
 def __getStatisticByID__(statistic_id):
     if statistic_id is None:
-        raise ExecutionAbort("[DATA] Cannot get statistic for non-existent article id.")
+        raise ExecutionAbort("[DATA] Cannot get statistic for non-existent statistic id.")
 
-    statisticSnapshot = db.collection("articles").document(statistic_id).get().to_dict()
+    statisticSnapshot = db.collection("statistics").document(statistic_id).get().to_dict()
 
     statisticContent = statisticSnapshot.get("content")
     statisticAnswer = statisticSnapshot.get("answer")
