@@ -93,6 +93,7 @@ document.querySelectorAll('.button').forEach(button => {
         if (data.status === 'success') {
           let popup = document.getElementById('popup');
           let popupText = popup.querySelector('h2'); // Select the <h2> inside #popup
+          let score_in_popup = popup.querySelector("#score");
 
           // Change text based on win condition
           if (data.win === "True") {
@@ -100,6 +101,7 @@ document.querySelectorAll('.button').forEach(button => {
           } else {
             popupText.innerText = "You guessed incorrectly...";
           }
+          score_in_popup.innerText = "Your score was: " + data.score
 
           // Show the popup
           popup.style.display = 'block';

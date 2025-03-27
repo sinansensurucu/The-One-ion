@@ -106,16 +106,16 @@ def button_pressed():
 
     id_of_button_pressed = request.form['button_id']
     time_taken = request.form['time_left']
-    ### time taken -> access here :>
-
+    ### time taken -> access here :>  also set the score there
+    score = 100
     if Article[3] == id_of_button_pressed:
-        return jsonify({"status": "success", "id": id_of_button_pressed, "win" : "True"})
+        return jsonify({"status": "success", "id": id_of_button_pressed, "win" : "True", "score": score})
         
         ##game win
     elif Statistic[1] == id_of_button_pressed:
-        return jsonify({"status": "success", "id": id_of_button_pressed, "win" : "True"})
+        return jsonify({"status": "success", "id": id_of_button_pressed, "win" : "True", "score": score})
     else:
-        return jsonify({"status": "success", "id": id_of_button_pressed, "win" : "False"})
+        return jsonify({"status": "success", "id": id_of_button_pressed, "win" : "False", "score": score})
         ##game lose
 
 @app.route('/next_article', methods=['POST'])
