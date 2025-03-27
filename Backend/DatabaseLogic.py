@@ -218,8 +218,11 @@ def getArticleToSolve(user_id):
 
         allArticleIDs = sorted(__getAllArticles__())
 
-        if solvedArticleIDs == allArticleIDs:
-            return random.choice(allArticleIDs)
+        if len(solvedArticleIDs) == len(allArticleIDs):
+            return __getArticleByID__(random.choice(allArticleIDs))
+
+        print(len(solvedArticleIDs))
+        print(len(allArticleIDs))
 
         availableArticles = [article for article in allArticleIDs if article not in solvedArticleIDs]
         
@@ -240,8 +243,8 @@ def getStatisticToSolve(user_id):
 
         allStatisticsIDs = sorted(__getAllStatistics__())
 
-        if solvedStatisticIDs == allStatisticsIDs:
-            return random.choice(allStatisticsIDs)
+        if len(solvedStatisticIDs) == len(allStatisticsIDs):
+            return __getStatisticByID__(random.choice(allStatisticsIDs))
 
         availableStatistics = [statistic for statistic in allStatisticsIDs if statistic not in solvedStatisticIDs]
         

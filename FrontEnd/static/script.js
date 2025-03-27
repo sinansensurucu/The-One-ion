@@ -95,9 +95,9 @@ document.querySelectorAll('.button').forEach(button => {
 
           // Change text based on win condition
           if (data.win === "True") {
-            popupText.innerText = "You Win !!";
+            popupText.innerText = "You answered correctly!";
           } else {
-            popupText.innerText = "You Lose !!";
+            popupText.innerText = "You guessed incorrectly...";
           }
 
           // Show the popup
@@ -121,3 +121,10 @@ window.onload = function () {
 //     document.getElementById("overlay").style.display = "block";
 // });
 
+const overlay = document.getElementById('overlay');
+const allPopups = document.querySelectorAll('.popup');
+
+overlay.addEventListener('click', () => {
+  allPopups.forEach(p => p.style.display = 'none');
+  overlay.style.display = 'none';
+});

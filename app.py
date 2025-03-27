@@ -8,6 +8,17 @@ app = Flask(
     template_folder="Frontend/templates",
     static_folder="Frontend/static"
     )
+
+first_request = True
+
+@app.before_request
+def clear_session_on_startup():
+    global first_request
+    if first_request:
+        session.clear()
+        first_request = False
+        session["user_id"] = None
+
 app.secret_key = 'some-key-change-later'
 
 Article = None
@@ -17,12 +28,15 @@ button_pressed = False
 attempted_log_in = False
 id_of_button_pressed = None
 attempted_log_in = False
+logged_in = None
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
     global logged_in, Article, Statistic, user, attempted_log_in
+
     if not session.get("user_id"):
         logged_in = False
+        return redirect(url_for('signin'))
     else:
         logged_in = True
         #updateInfo()
@@ -94,12 +108,11 @@ def button_pressed():
     button_pressed = True 
 
     id_of_button_pressed = request.form['button_id']
-    print("article at button press = ",Article)
     if Article[3] == id_of_button_pressed:
         return jsonify({"status": "success", "id": id_of_button_pressed, "win" : "True"})
         
         ##game win
-    elif Statistic[2] == id_of_button_pressed:
+    elif Statistic[1] == id_of_button_pressed:
         return jsonify({"status": "success", "id": id_of_button_pressed, "win" : "True"})
     else:
         return jsonify({"status": "success", "id": id_of_button_pressed, "win" : "False"})
@@ -141,5 +154,4 @@ def game():
 
 if __name__ == '__main__':
     app.run(debug=True)
-    session["user_id"] = None
     

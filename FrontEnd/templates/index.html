@@ -7,14 +7,16 @@
     <link rel="stylesheet" href="../static/style.css" />
   </head>
   <body>
-    <h1>Welcome to the One-Ion</h1>
-    <div class="mode-select">
-      <button id="standard-mode-btn", onclick="switchMode('standard-mode')">Standard Mode</button>
-      <button id="daily-mode-btn", onclick="switchMode('daily-mode')">Daily Challenge</button>
-      <button id="statistic-mode-btn", onclick="switchMode('statistic-mode')">Statistic Mode</button>
-    </div>
-    <div id="timer" class = "timer">
-      Timer Placeholder i have no idea how GameLogic is called
+    <h1>The One-Ion!</h1>
+    <p>Made by Anda, Rithwik, Sinan, and Vivek.</p>
+    <div class="mode-container">
+      <button class="mode-box standard-mode" onclick="switchMode('standard-mode')">Classic Challenge</button>
+      <button class="mode-box daily-challenge" onclick="switchMode('daily-mode')">Daily Challenge</button>
+      <button class="mode-box statistic-mode" onclick="switchMode('statistic-mode')">Statistic Challenge</button>
+      <div class="mode-box timer-box">Time Remaining: (TIMER)</div>
+      <button class="signin-button" onclick="toggleSigninWindow()">
+        Score: {{ User[1] }} (Click for Settings)
+      </button>
     </div>
     <div class="grid-container">
 
@@ -30,9 +32,9 @@
         </div>
         
         <div class="button_container">
-          <button class="button" button-type="Real">Real</button><button
-            class="button" button-type="Fake">Fake</button><button
-            class="button" button-type="Onion">Onion</button>
+          <button class="button" button-type="Real">This article is real.</button><button
+            class="button" button-type="Fake">This article is fake.</button><button
+            class="button" button-type="Onion">This article is The Onion.</button>
         </div>
         <h2 class="mode-title">You are currently playing a Classic Challenge!</h2>
       </div>
@@ -45,15 +47,12 @@
 
           <div class="article-content">
             {{ article[1] }}
-            <br>
-            {{ article[2] }}
-
           </div>
         </div>
         <div class="button_container">
-          <button class="button" button-type="Real">Real</button><button
-            class="button" button-type="Fake">Fake</button><button
-            class="button" button-type="Onion">Onion</button>
+          <button class="button" button-type="Real">This article is real.</button><button
+            class="button" button-type="Fake">This article is fake.</button><button
+            class="button" button-type="Onion">This article is The Onion.</button>
         </div>
         <h2 class="mode-title">You are currently playing the Daily Challenge!</h2>
       </div>
@@ -80,10 +79,6 @@
 
       <!-- <p class="debug"> DEBUG </p> -->
     </div>
-
-    <button class="signin-button" onclick="toggleSigninWindow()">
-      {{ User[0] }}
-    </button>
 
     <div class="signin-window" id="signinWindow">
       <form action="#" method="POST">
@@ -114,8 +109,9 @@
 
     <div class="overlay" id="overlay"></div>
     <div class="popup" id="popup">
-      <h2>You Lose!!</h2>
-      <p>This is a simple popup!</p>
+      <h2></h2>
+      <p class="popup-text">This article was from:</p>
+      <p class="popup-text">{{ article[2] }}</p>
       <button id="close-popup-btn">Close</button>
     </div>
     <div class="popup" id="forcesignin">
