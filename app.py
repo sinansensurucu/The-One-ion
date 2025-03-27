@@ -101,9 +101,13 @@ def signin():
 @app.route('/button_pressed', methods=['POST'])
 def button_pressed():
     timeResetButtonIDs = ["standard-mode-btn", "daily-mode-btn", "statistic-mode-btn",]
+    time_taken = -1  ## null value of -1
     button_pressed = True 
 
     id_of_button_pressed = request.form['button_id']
+    time_taken = request.form['time_left']
+    ### time taken -> access here :>
+
     if Article[3] == id_of_button_pressed:
         return jsonify({"status": "success", "id": id_of_button_pressed, "win" : "True"})
         

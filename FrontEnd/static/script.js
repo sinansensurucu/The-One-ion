@@ -81,7 +81,8 @@ document.querySelectorAll('.button').forEach(button => {
     fetch('/button_pressed', {
       method: 'POST',
       body: new URLSearchParams({
-        'button_id': button_id
+        'button_id': button_id,
+        'time_left': timeLeft
       }),
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
@@ -141,7 +142,7 @@ function next_article(){
   allPopups.forEach(p => p.style.display = 'none');
   overlay.style.display = 'none';
   fetch('/next_article', {
-    method: 'POST',
+    method: 'POST', 
     body: new URLSearchParams({
     }),
     headers: {
@@ -159,7 +160,7 @@ function next_article(){
     .catch(error => console.error('Error:', error));
 }
 
-  let timeLeft = 60; // Set the timer in seconds
+  let timeLeft = 100; // Set the timer in seconds
   let timerElement;
 
   function startTimer() {
@@ -176,7 +177,7 @@ function next_article(){
               document.getElementById("time-up-message").innerText = "Time's up!";
               sendTimeOverEvent();
           } else {
-              timerElement.innerText = timeLeft + "s";
+              timerElement.innerText = timeLeft;
               timeLeft--;
           }
       }, 1000);
