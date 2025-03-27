@@ -128,3 +128,38 @@ overlay.addEventListener('click', () => {
   allPopups.forEach(p => p.style.display = 'none');
   overlay.style.display = 'none';
 });
+
+  let timeLeft = 60; // Set the timer in seconds
+  let timerElement;
+
+  function startTimer() {
+      timerElement = document.getElementById("timer"); // Ensure it's assigned after page load
+
+      if (!timerElement) {
+          console.error("Timer element not found!");
+          return;
+      }
+
+      let timerInterval = setInterval(() => {
+          if (timeLeft <= 0) {
+              clearInterval(timerInterval);
+              document.getElementById("time-up-message").innerText = "Time's up!";
+              sendTimeOverEvent();
+          } else {
+              timerElement.innerText = timeLeft + "s";
+              timeLeft--;
+          }
+      }, 1000);
+  }
+
+  function sendTimeOverEvent() {
+      fetch("/time_over", { method: "POST" })
+      .then(response => response.json())
+      .then(data => {
+          alert(data.message);
+      })
+      .catch(error => console.error("Error sending time over event:", error));
+  }
+
+  // Ensure script runs only after DOM is fully loaded
+  document.addEventListener("DOMContentLoaded", startTimer);

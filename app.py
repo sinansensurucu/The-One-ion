@@ -118,6 +118,15 @@ def button_pressed():
         return jsonify({"status": "success", "id": id_of_button_pressed, "win" : "False"})
         ##game lose
     
+@app.route('/time_over', methods=['POST'])
+def time_over():
+    if not session.get("user_id"):
+        return jsonify({"message": "Please log in first."}), 403
+    
+    # Handle time-out logic (e.g., end game, reset question, etc.)
+    return jsonify({"message": "Time is up! Try again."})
+
+
 
 @app.route('/game', methods=['GET', 'POST'])
 def game():
