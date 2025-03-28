@@ -9,7 +9,8 @@
   <body>
     <div class="signin-container">
       <h1 class="signin-text">Welcome to The One-Ion!</h1>
-      <h2 class="signin-text">Sign In or Create an Account To Start Playing.</h2>
+      <h2 class="signin-text">Sign In or Create an Account To Start
+        Playing.</h2>
       <form class="input-container" action="{{ url_for('signin') }}"
         method="POST" onsubmit="loginHandler(event)">
         <input type="text" name="username" placeholder="Email or Username"
@@ -17,8 +18,10 @@
         <input type="password" name="password" placeholder="Password"
           required />
         <div class="button-container">
-          <button class="log-in-button" type="submit" name="action" value="login">Log In</button>
-          <button class="create-account-button" type="submit" name="action" value="create account">Create Account</button>
+          <button class="log-in-button" type="submit" name="action"
+            value="login">Log In</button>
+          <button class="create-account-button" type="submit" name="action"
+            value="create account">Create Account</button>
         </div>
       </form>
     </div>

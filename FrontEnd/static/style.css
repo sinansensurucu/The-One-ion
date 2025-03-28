@@ -18,8 +18,8 @@ h1 {
 button {
   padding: 10px 20px;
   font-size: 16px;
-  border: none;     /* remove any border */
-  outline: none;    /* also removes focus outline in some browsers */
+  border: none;    
+  outline: none;   
   box-shadow: none;
   border-radius: 10px;
 }
@@ -47,25 +47,20 @@ button {
 
 .mode-container {
   display: grid;
-  grid-template-columns: repeat(5, 1fr); /* 4 equal columns */
-  gap: 10px; /* Optional: adjusts spacing between boxes */
-  width: 90%; /* Ensures it fills the width of the white box */
-  margin: 0 auto; /* Center container if needed */
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  width: 90%;
+  margin: 0 auto;
   border-radius: 10px;
   margin-bottom: 0px;
 }
 
 .mode-box {
-  background: #f0f0f0; /* Customize as needed */
+  background: #f0f0f0;
   text-align: center;
-  padding: 20px; /* Adjust for desired height/spacing */
+  padding: 20px;
   box-sizing: border-box;
   border-radius: 10px;
-
-}
-
-/* Optional: further customize the timer box */
-.timer-box {
 
 }
 
@@ -147,7 +142,7 @@ button {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 400px;      /* keep whatever width you need */
+  width: 400px; 
   padding: 20px;
   border-radius: 8px;
   background-color: white;
@@ -250,19 +245,19 @@ body {
   background: #018D43;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Keeps title, content, and buttons spaced */
+  justify-content: space-between;
   align-items: center;
-  width: 95%; /* Adjusted to leave space on left and right */
+  width: 95%; 
   color: white;
-  padding: 10px; /* Ensures equal spacing inside */
-  margin: auto; /* Centers it properly inside the grid */
-  box-sizing: border-box; /* Ensures padding doesn’t affect width */
-  border-radius: 10px; /* Adjust this value as needed */
+  padding: 10px; 
+  margin: auto; 
+  box-sizing: border-box;
+  border-radius: 10px;
 }
 
 .mode-title {
-  margin-top: 10px;   /* Adjust as needed */
-  margin-bottom: 10px; /* This creates space below the title */
+  margin-top: 10px; 
+  margin-bottom: 10px;
   text-align: center;
   font-size: 16px;
   color: #FFFFFF;
@@ -283,7 +278,7 @@ body {
 
 .article-title {
   font-weight: bold;
-  font-size: 30px; /* Smaller title */
+  font-size: 30px;
   text-align: center; 
   font-family: 'Trebuchet MS', sans-serif;
   display: block;
@@ -292,7 +287,7 @@ body {
 }
 
 .article-content {
-  font-size: 20px; /* Larger content */
+  font-size: 20px;
   text-align: left;
   max-width: 95%;
   display: block;
@@ -348,7 +343,6 @@ body {
 
   width: auto;
   height: 80%;
-  /* grid-template-columns: repeat(3, 1fr); */
   justify-content: center;
   align-items: center;
   margin: 10px auto;

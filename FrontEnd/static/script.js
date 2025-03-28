@@ -24,27 +24,11 @@ function switchMode(mode) {
   document.getElementById(mode).classList.remove('hidden');
 }
 
-
-
-// Game screen code
-
-
-// document.getElementById('close-popup-btn').addEventListener('click', function() {
-//     document.getElementById('signinWindow').style.display = 'block';
-//     document.getElementById('overlay').style.display = 'block';
-// });
-
 // Close the popup when the close button is clicked
 document.getElementById('close-popup-btn').addEventListener('click', function () {
   document.getElementById('popup').style.display = 'none';
   document.getElementById('overlay').style.display = 'none';
 });
-
-// // Close the popup if the user clicks on the overlay
-// document.getElementById('overlay').addEventListener('click', function() {
-//   document.getElementById('popup').style.display = 'none';
-//   document.getElementById('overlay').style.display = 'none';
-// });
 
 
 // Handle the "account" button click
@@ -59,14 +43,6 @@ document.querySelector('.account_button')?.addEventListener('click', function ()
       'Content-Type': 'application/x-www-form-urlencoded'
     }
   })
-    // .then(response => response.json())
-    // .then(data => {
-    //     if (data.status === 'success') {
-    //         window.location.reload(); // Reload the page if login is successful
-    //     } else {
-    //         alert('Login failed');
-    //     }
-    // })
     .catch(error => console.error('Error:', error));
 });
 
@@ -121,12 +97,7 @@ window.onload = function () {
   }
 };
 
-//attempt at making a confirmation for deleting account, did not work
-// document.getElementsByClassName('signup-btn')[0].addEventListener('click', function() {
-//     document.getElementById("deleteconfirm").style.display = "block";
-//     document.getElementById("overlay").style.display = "block";
-// });
-
+//popup overlay logic
 const overlay = document.getElementById('overlay');
 const allPopups = document.querySelectorAll('.popup');
 const pop_up_btn = document.getElementById('close-popup-btn');
@@ -139,7 +110,9 @@ pop_up_btn.addEventListener('click', () => {
   next_article()
 });
 
-let timeLeft = 100; // Set the timer in seconds
+
+//timer logic
+let timeLeft = 100;
 let timerElement;
 let timerInterval;
 
@@ -162,8 +135,6 @@ function next_article(){
   })
   .then(response => response.json())
   .then(data => {
-    console.log("Server Response:", data);  // Debugging
-
     if (data.status === 'success') {
       window.location.href = data.url;
     }

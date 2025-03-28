@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 from Backend.DatabaseLogic import ExecutionAbort, signInUser, createUser, deleteUser, getArticleToSolve, getUserEmail, getUserTotalScore, getUserBestScore, getUserStreak, getLeaderboard, getStatisticToSolve
 from Backend.GameLogic import GameLogic
-import time
 
 app = Flask(
     __name__,
@@ -20,7 +19,7 @@ def clear_session_on_startup():
         session["user_id"] = None
 
 app.secret_key = 'some-key-change-later'
-
+#attributes to send to frontend
 Article = None
 ArticleD = None
 Statistic = None
@@ -31,6 +30,7 @@ id_of_button_pressed = None
 attempted_log_in = False
 logged_in = None
 
+#maintains game screen
 @app.route('/', methods=['GET', 'POST'])
 def index():
     global logged_in, Article, ArticleD, Statistic, user, attempted_log_in
@@ -62,6 +62,7 @@ def index():
     
     return render_template("index.html", article=Article, articleD=ArticleD, statistic=Statistic,User=user, logged_in=logged_in, attempted=attempted_log_in)
 
+#maintains signin screen
 @app.route('/signin', methods=['GET', 'POST'])
 def signin():
     global logged_in, Article, ArticleD, Statistic, user, attempted_log_in
@@ -95,25 +96,19 @@ def signin():
         except ExecutionAbort as e:
             attempted_log_in = True
             flash(str(e), "error")
-            print("invalid login")
             return redirect(url_for('signin'))
-        print("if not in index then url direct is wrong")
         return redirect(url_for('index'))
     
     return render_template("signin.html", article=Article, articleD=ArticleD, statistic=Statistic, User=user, logged_in = logged_in, attempted=attempted_log_in)
 
-
+#listen to button calls to handel complex buttons
 @app.route('/button_pressed', methods=['POST'])
 def button_pressed():
     # timeResetButtonIDs = ["standard-mode-btn", "daily-mode-btn", "statistic-mode-btn",]
-
     # time_taken = -1  ## null value of -1
-
     if not session.get("user_id"):
         return jsonify({"status": "error", "message": "Not logged in"}), 401
     
-
-
     # button_pressed = True 
 
     id_of_button_pressed = request.form['button_id']
@@ -147,21 +142,11 @@ def button_pressed():
         return jsonify({"status": "error", "message": str(e)}), 500
 
     
-
+#helper function for game logic
 @app.route('/next_article', methods=['POST'])
 def next_article():
-    # global Article, Statistic, user
-    # if not session.get("user_id"):
-    #     return jsonify({"status": "error", "message": "User not logged in"})
-
-    # Article = getArticleToSolve(session["user_id"])
-    # Statistic = getStatisticToSolve(session["user_id"])
     
     return jsonify({"status": "success", "url": url_for('signin')})
-
-
-
-
 
     
 @app.route('/time_over', methods=['POST'])
@@ -172,40 +157,6 @@ def time_over():
     # Handle time-out logic (e.g., end game, reset question, etc.)
     return jsonify({"message": "Time is up! Try again."})
 
-
-
-@app.route('/game', methods=['GET', 'POST'])
-def game():
-    if not session.get("user_id"):
-        flash("Please sign in first.", "error")
-        return redirect(url_for('signin'))
-    
-    game_logic = GameLogic(session["user_id"])
-    
-    if request.method == 'POST':
-        # Get the user's answer ("real", "fake", or "onion")
-        user_answer = request.form.get("answer")
-        
-        # Fetch the correct answer (replace with actual logic)
-        article_id = request.form.get("article_id")  # Pass article_id from frontend
-        correct_answer = get_correct_answer(article_id)  # need to implement this function
-
-        # Check if the user's answer is correct
-        is_correct = user_answer == correct_answer
-        
-        # Calculate the score
-        score = game_logic.calculate_score(is_correct)
-        
-        # Update the user's profile
-        game_logic.update_user_profile(is_correct, score)
-        
-        # Provide feedback to the user
-        flash(f"Your score: {score}", "success")
-        return redirect(url_for('game'))
-    
-    # Fetch a new article for the user to solve
-    article = getArticleToSolve(session["user_id"])
-    return render_template("game.html", article=article)
 
 if __name__ == '__main__':
     app.run(debug=True)

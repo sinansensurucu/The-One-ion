@@ -10,10 +10,14 @@
     <h1>The One-Ion!</h1>
     <p>Made by Anda, Rithwik, Sinan, and Vivek.</p>
     <div class="mode-container">
-      <button class="mode-box standard-mode" onclick="switchMode('standard-mode')">Classic Challenge</button>
-      <button class="mode-box daily-challenge" onclick="switchMode('daily-mode')">Daily Challenge</button>
-      <button class="mode-box statistic-mode" onclick="switchMode('statistic-mode')">Statistic Challenge</button>
-      <div class="mode-box timer-box">Time Remaining: <span id="timer">100</span></div>
+      <button class="mode-box standard-mode"
+        onclick="switchMode('standard-mode')">Classic Challenge</button>
+      <button class="mode-box daily-challenge"
+        onclick="switchMode('daily-mode')">Daily Challenge</button>
+      <button class="mode-box statistic-mode"
+        onclick="switchMode('statistic-mode')">Statistic Challenge</button>
+      <div class="mode-box timer-box">Time Remaining: <span
+          id="timer">100</span></div>
       <button class="signin-button" onclick="toggleSigninWindow()">
         Score: {{ User[1] }} (Click for Settings)
       </button>
@@ -30,16 +34,20 @@
             {{ article[1] }}
           </div>
         </div>
-        
+
         <div class="button_container">
-          <button class="button" button-type="Real">This article is real.</button><button
-            class="button" button-type="Fake">This article is fake.</button><button
-            class="button" button-type="Onion">This article is The Onion.</button>
+          <button class="button" button-type="Real">This article is
+            real.</button><button
+            class="button" button-type="Fake">This article is
+            fake.</button><button
+            class="button" button-type="Onion">This article is The
+            Onion.</button>
         </div>
-        <h2 class="mode-title">You are currently playing a Classic Challenge!</h2>
+        <h2 class="mode-title">You are currently playing a Classic
+          Challenge!</h2>
       </div>
       <div id="daily-mode" class="mode hidden">
-        
+
         <div class="vertical-box">
           <div class="article-title">
             {{ articleD[0] }}
@@ -50,43 +58,43 @@
           </div>
         </div>
         <div class="button_container">
-          <button class="button" button-type="Real">This article is real.</button><button
-            class="button" button-type="Fake">This article is fake.</button><button
-            class="button" button-type="Onion">This article is The Onion.</button>
+          <button class="button" button-type="Real">This article is
+            real.</button><button
+            class="button" button-type="Fake">This article is
+            fake.</button><button
+            class="button" button-type="Onion">This article is The
+            Onion.</button>
         </div>
-        <h2 class="mode-title">You are currently playing the Daily Challenge!</h2>
+        <h2 class="mode-title">You are currently playing the Daily
+          Challenge!</h2>
       </div>
       <div id="statistic-mode" class="mode hidden">
-        
+
         <div class="vertical-box">
           <div class="article-title">
             {{ statistic[0] }}
           </div>
 
-          <!-- <div class="article-content">
-            {{ statistic[1] }}
-            <br>
-            {{ statistic[2] }}
-
-          </div> -->
         </div>
         <div class="button_container">
           <button class="button" button-type="Real">Real</button>
           <button class="button" button-type="Fake">Fake</button>
         </div>
-        <h2 class="mode-title">You are currently playing the Statistics Challenge!</h2>
+        <h2 class="mode-title">You are currently playing the Statistics
+          Challenge!</h2>
       </div>
-
-      <!-- <p class="debug"> DEBUG </p> -->
     </div>
 
     <div class="signin-window" id="signinWindow">
       <form action="#" method="POST">
         <div class="account-content">
           <h2>Hello, Player!</h2>
-          <p class="normal-text"> You have a total score of {{ User[1] }} points.</p>
-          <p class="normal-text"> Your best score in a single round is {{ User[2] }} points.</p>
-          <p class="normal-text"> You currently have a {{ User[3] }} day streak.</p>
+          <p class="normal-text"> You have a total score of {{ User[1] }}
+            points.</p>
+          <p class="normal-text"> Your best score in a single round is {{
+            User[2] }} points.</p>
+          <p class="normal-text"> You currently have a {{ User[3] }} day
+            streak.</p>
 
           <div class="leaderboard">
             <h5> Global Leaderboard </h5>
@@ -111,8 +119,8 @@
     <div class="popup" id="popup">
       <h2></h2>
       <p class="popup-text">This article was from:</p>
-      <a class = "popup_link" href="{{ article[2] }}">{{ article[2] }}</a>
-      <p id = "score"></p>
+      <a class="popup_link" href="{{ article[2] }}">{{ article[2] }}</a>
+      <p id="score"></p>
       <button id="close-popup-btn">Close</button>
     </div>
     <div class="popup" id="forcesignin">
