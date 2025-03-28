@@ -104,27 +104,48 @@ def signin():
 
 @app.route('/button_pressed', methods=['POST'])
 def button_pressed():
-    timeResetButtonIDs = ["standard-mode-btn", "daily-mode-btn", "statistic-mode-btn",]
-    time_taken = -1  ## null value of -1
-    button_pressed = True 
+    # timeResetButtonIDs = ["standard-mode-btn", "daily-mode-btn", "statistic-mode-btn",]
+
+    # time_taken = -1  ## null value of -1
+
+    if not session.get("user_id"):
+        return jsonify({"status": "error", "message": "Not logged in"}), 401
+    
+
+
+    # button_pressed = True 
 
     id_of_button_pressed = request.form['button_id']
     time_left = int(request.form['time_left'])
+    user_id = session["user_id"]
     ### time taken -> access here :>  also set the score there
 
     time_taken = 100 - time_left
-
     score = time_taken * 10 #just to make the numbers a bit bigger and nicer
 
+    game = GameLogic(user_id)
+
+    is_correct = False
     if Article[3] == id_of_button_pressed:
-        return jsonify({"status": "success", "id": id_of_button_pressed, "win" : "True", "score": score})
+        is_correct = True
+    elif Statistic and Statistic[1] == id_of_button_pressed:
+        is_correct = True
+    
+    # Update user profile
+    try:
+        game.update_user_profile(is_correct, score if is_correct else 0)
         
-        ##game win
-    elif Statistic[1] == id_of_button_pressed:
-        return jsonify({"status": "success", "id": id_of_button_pressed, "win" : "True", "score": score})
-    else:
-        return jsonify({"status": "success", "id": id_of_button_pressed, "win" : "False", "score": 0}) # 0 points if lose
-        ##game lose
+        return jsonify({
+            "status": "success",
+            "id": id_of_button_pressed,
+            "win": "True" if is_correct else "False",
+            "score": score if is_correct else 0
+        })
+        
+    except ExecutionAbort as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
+
+    
 
 @app.route('/next_article', methods=['POST'])
 def next_article():
