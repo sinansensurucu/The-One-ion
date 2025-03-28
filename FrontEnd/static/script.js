@@ -139,12 +139,14 @@ pop_up_btn.addEventListener('click', () => {
   next_article()
 });
 
-
+let timeLeft = 100; // Set the timer in seconds
+let timerElement;
+let timerInterval;
 
 function next_article(){
 
   timeLeft = 100;
-  startTimer;
+  startTimer();
 
   const overlay = document.getElementById('overlay');
   const allPopups = document.querySelectorAll('.popup');
@@ -169,10 +171,6 @@ function next_article(){
     .catch(error => console.error('Error:', error));
 }
 
-let timeLeft = 100; // Set the timer in seconds
-let timerElement;
-let timerInterval;
-
 function startTimer() {
     timerElement = document.getElementById("timer"); // Ensure it's assigned after page load
     clearInterval(timerInterval); // Clear any previous timer
@@ -182,7 +180,7 @@ function startTimer() {
         return;
     }
 
-    let timerInterval = setInterval(() => {
+    timerInterval = setInterval(() => {
         if (timeLeft < 0) {
             clearInterval(timerInterval);
             document.getElementById("time-up-message").innerText = "Time's up!";
