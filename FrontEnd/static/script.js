@@ -77,12 +77,15 @@ document.querySelectorAll('.button').forEach(button => {
     // Get the article title (article[0]) from the data-attribute
     const button_id = button.getAttribute('button-type');
 
+    const timeUsed = 100 - timeLeft; // Calculate time taken
+        clearInterval(timerInterval);
+
     // Send the value to the Flask server using a POST request
     fetch('/button_pressed', {
       method: 'POST',
       body: new URLSearchParams({
         'button_id': button_id,
-        'time_left': timeLeft
+        'time_left': timeUsed
       }),
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
@@ -139,6 +142,10 @@ pop_up_btn.addEventListener('click', () => {
 
 
 function next_article(){
+
+  timeLeft = 100;
+  startTimer;
+
   const overlay = document.getElementById('overlay');
   const allPopups = document.querySelectorAll('.popup');
   allPopups.forEach(p => p.style.display = 'none');
@@ -162,37 +169,39 @@ function next_article(){
     .catch(error => console.error('Error:', error));
 }
 
-  let timeLeft = 100; // Set the timer in seconds
-  let timerElement;
+let timeLeft = 100; // Set the timer in seconds
+let timerElement;
+let timerInterval;
 
-  function startTimer() {
-      timerElement = document.getElementById("timer"); // Ensure it's assigned after page load
+function startTimer() {
+    timerElement = document.getElementById("timer"); // Ensure it's assigned after page load
+    clearInterval(timerInterval); // Clear any previous timer
 
-      if (!timerElement) {
-          console.error("Timer element not found!");
-          return;
-      }
+    if (!timerElement) {
+        console.error("Timer element not found!");
+        return;
+    }
 
-      let timerInterval = setInterval(() => {
-          if (timeLeft < 0) {
-              clearInterval(timerInterval);
-              document.getElementById("time-up-message").innerText = "Time's up!";
-              sendTimeOverEvent();
-          } else {
-              timerElement.innerText = timeLeft;
-              timeLeft--;
-          }
-      }, 1000);
-  }
+    let timerInterval = setInterval(() => {
+        if (timeLeft < 0) {
+            clearInterval(timerInterval);
+            document.getElementById("time-up-message").innerText = "Time's up!";
+            sendTimeOverEvent();
+        } else {
+            timerElement.innerText = timeLeft;
+            timeLeft--;
+        }
+    }, 1000);
+}
 
-  function sendTimeOverEvent() {
-      fetch("/time_over", { method: "POST" })
-      .then(response => response.json())
-      .then(data => {
-          alert(data.message);
-      })
-      .catch(error => console.error("Error sending time over event:", error));
-  }
+function sendTimeOverEvent() {
+    fetch("/time_over", { method: "POST" })
+    .then(response => response.json())
+    .then(data => {
+        alert(data.message);
+    })
+    .catch(error => console.error("Error sending time over event:", error));
+}
 
-  // Ensure script runs only after DOM is fully loaded
-  document.addEventListener("DOMContentLoaded", startTimer);
+// Ensure script runs only after DOM is fully loaded
+document.addEventListener("DOMContentLoaded", startTimer);
