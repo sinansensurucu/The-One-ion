@@ -102,9 +102,8 @@ button {
 }
 
 
-.popup-text {
-  text-align: center;
-  padding: 0px;
+.popup_link {
+  color: white;
 }
 
 .signin-button {
