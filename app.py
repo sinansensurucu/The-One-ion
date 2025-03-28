@@ -22,6 +22,7 @@ def clear_session_on_startup():
 app.secret_key = 'some-key-change-later'
 
 Article = None
+ArticleD = None
 Statistic = None
 user = None
 button_pressed = False
@@ -32,7 +33,7 @@ logged_in = None
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    global logged_in, Article, Statistic, user, attempted_log_in
+    global logged_in, Article, ArticleD, Statistic, user, attempted_log_in
 
     if not session.get("user_id"):
         logged_in = False
@@ -58,13 +59,14 @@ def index():
             flash(str(e), "error")
         return redirect(url_for('signin'))
     
-    return render_template("index.html", article=Article, statistic=Statistic,User=user, logged_in=logged_in, attempted=attempted_log_in)
+    return render_template("index.html", article=Article, articleD=ArticleD, statistic=Statistic,User=user, logged_in=logged_in, attempted=attempted_log_in)
 
 @app.route('/signin', methods=['GET', 'POST'])
 def signin():
-    global Article, Statistic, user, logged_in, attempted_log_in
+    global logged_in, Article, ArticleD, Statistic, user, attempted_log_in
     if session.get("user_id"):
         Article = getArticleToSolve(session["user_id"]) 
+        ArticleD = getArticleToSolve(session["user_id"])
         Statistic = getStatisticToSolve(session["user_id"])
         user = (getUserEmail(session["user_id"]), getUserTotalScore(session["user_id"]), getUserBestScore(session["user_id"]), getUserStreak(session["user_id"]), getLeaderboard())
 
@@ -92,10 +94,12 @@ def signin():
         except ExecutionAbort as e:
             attempted_log_in = True
             flash(str(e), "error")
+            print("invalid login")
             return redirect(url_for('signin'))
+        print("if not in index then url direct is wrong")
         return redirect(url_for('index'))
     
-    return render_template("signin.html", article=Article, statistic=Statistic, User=user, logged_in = logged_in, attempted=attempted_log_in)
+    return render_template("signin.html", article=Article, articleD=ArticleD, statistic=Statistic, User=user, logged_in = logged_in, attempted=attempted_log_in)
 
 
 @app.route('/button_pressed', methods=['POST'])
