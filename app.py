@@ -41,6 +41,7 @@ def index():
     else:
         logged_in = True
 
+    user = (getUserEmail(session["user_id"]), getUserTotalScore(session["user_id"]), getUserBestScore(session["user_id"]), getUserStreak(session["user_id"]), getLeaderboard())
     
     if request.method == 'POST':
         action = request.form.get("action")

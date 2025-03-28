@@ -221,9 +221,6 @@ def getArticleToSolve(user_id):
         if len(solvedArticleIDs) == len(allArticleIDs):
             return __getArticleByID__(random.choice(allArticleIDs))
 
-        print(len(solvedArticleIDs))
-        print(len(allArticleIDs))
-
         availableArticles = [article for article in allArticleIDs if article not in solvedArticleIDs]
         
         articleToSolve = random.choice(availableArticles) 
